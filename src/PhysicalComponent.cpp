@@ -5,6 +5,7 @@
 */
 
 #include <Athena-Physics/PhysicalComponent.h>
+#include <Athena-Physics/World.h>
 
 using namespace Athena;
 using namespace Athena::Physics;
@@ -45,6 +46,15 @@ PhysicalComponent* PhysicalComponent::create(const std::string& strName, Compone
 PhysicalComponent* PhysicalComponent::cast(Component* pComponent)
 {
 	return dynamic_cast<PhysicalComponent*>(pComponent);
+}
+
+
+/*********************************** METHODS **********************************/
+
+World* PhysicalComponent::getWorld() const
+{
+    return dynamic_cast<World*>(m_pList->getEntity()->getScene()->getComponent(
+                                    Entities::tComponentID(Entities::COMP_PHYSICAL, World::DEFAULT_NAME)));
 }
 
 

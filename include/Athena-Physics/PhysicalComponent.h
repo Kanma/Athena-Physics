@@ -70,11 +70,7 @@ public:
 	/// @remark It is assumed that the scene has only one physical world, with the
 	/// default name ('PhysicalWorld')
 	//-----------------------------------------------------------------------------------
-    // inline World* getWorld()
-    // {
-    //     return dynamic_cast<World*>(m_pList->getEntity()->getScene()->getComponent(
-    //                                     Entities::tComponentID(Entities::COMP_PHYSICAL, "PhysicalWorld")));
-    // }
+    World* getWorld() const;
 
 
 	//_____ Management of the properties __________

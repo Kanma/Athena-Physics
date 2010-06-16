@@ -1,5 +1,7 @@
 # List the source files
-set(SRCS PhysicalComponent.cpp
+set(SRCS Conversions.cpp
+         PhysicalComponent.cpp
+         World.cpp
 )
 
 # Precompiler definitions
