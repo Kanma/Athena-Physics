@@ -43,7 +43,7 @@ add_subdirectory(dependencies)
 if (ATHENA_PHYSICS_STATIC)
     xmake_init_static(ATHENA_PHYSICS)
     xmake_add_link_paths(ATHENA_PHYSICS "${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}")
-    xmake_add_link_targets(ATHENA_PHYSICS Athena-Physics "${XMAKE_ATHENA_ENTITIES_LINK_TARGETS}")
+    xmake_add_link_targets(ATHENA_PHYSICS Athena-Physics "${XMAKE_ATHENA_ENTITIES_LINK_TARGETS}" "${XMAKE_BULLET_LINK_TARGETS}")
 else()
     xmake_init_dynamic(ATHENA_PHYSICS)
     xmake_add_link_paths(ATHENA_PHYSICS "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
@@ -51,8 +51,9 @@ else()
 endif()
 
 xmake_add_include_paths(ATHENA_PHYSICS ${ATHENA_PHYSICS_SOURCE_DIR}/include
-                                       ${XMAKE_ATHENA_ENTITIES_INCLUDE_PATHS})
+                                       ${XMAKE_ATHENA_ENTITIES_INCLUDE_PATHS}
+                                       ${XMAKE_BULLET_INCLUDE_PATHS})
 
 # Subdirectories to process
-# add_subdirectory(include)
-# add_subdirectory(src)
+add_subdirectory(include)
+add_subdirectory(src)
