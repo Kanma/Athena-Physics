@@ -95,9 +95,15 @@ void Body::setKinematic(bool bKinematic)
         return;
 
     if (bKinematic)
+    {
 		m_pBody->setCollisionFlags(m_pBody->getCollisionFlags() | btCollisionObject::CF_KINEMATIC_OBJECT);
+	    m_pBody->setActivationState(DISABLE_DEACTIVATION);
+	}
 	else
+	{
 		m_pBody->setCollisionFlags(m_pBody->getCollisionFlags() & ~btCollisionObject::CF_KINEMATIC_OBJECT);
+	    m_pBody->setActivationState(WANTS_DEACTIVATION);
+    }
 
     updateBody();
 }

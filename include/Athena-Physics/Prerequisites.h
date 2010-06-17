@@ -30,6 +30,7 @@ namespace Athena
         class World;
         
         class BoxShape;
+        class SphereShape;
     }
 }
 

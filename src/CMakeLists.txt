@@ -4,6 +4,7 @@ set(SRCS Body.cpp
          CollisionShape.cpp
          Conversions.cpp
          PhysicalComponent.cpp
+         SphereShape.cpp
          World.cpp
 )
 
