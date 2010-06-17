@@ -1,42 +1,39 @@
-/** @file	CollisionShape.h
+/** @file	BoxShape.h
 	@author	Philip Abbet
 
-	Declaration of the class 'Athena::Physics::CollisionShape'
+	Declaration of the class 'Athena::Physics::BoxShape'
 */
 
-#ifndef _ATHENA_PHYSICS_COLLISIONSHAPE_H_
-#define _ATHENA_PHYSICS_COLLISIONSHAPE_H_
+#ifndef _ATHENA_PHYSICS_BOXSHAPE_H_
+#define _ATHENA_PHYSICS_BOXSHAPE_H_
 
 #include <Athena-Physics/Prerequisites.h>
-#include <Athena-Physics/PhysicalComponent.h>
+#include <Athena-Physics/CollisionShape.h>
 
 namespace Athena {
 namespace Physics {
 
 
 //---------------------------------------------------------------------------------------
-/// @brief	Base class for all the collision shapes
+/// @brief	Box primitive shape around the origin
 ///
-/// Collision shapes are used to specify the shape of a body in the physical simulation.
-/// See Body for a detailed explanation.
+/// The sides are specified by half extents, in local shape coordinates. By default, the
+/// box has a 1x1x1 dimension.
 //---------------------------------------------------------------------------------------
-class ATHENA_SYMBOL CollisionShape: public PhysicalComponent
+class ATHENA_SYMBOL BoxShape: public CollisionShape
 {
-    friend class Body;
-
-    
 	//_____ Construction / Destruction __________
 public:
     //-----------------------------------------------------------------------------------
     /// @brief	Constructor
     /// @param	strName		Name of the component
     //-----------------------------------------------------------------------------------
-	CollisionShape(const std::string& strName, Entities::ComponentsList* pList);
+	BoxShape(const std::string& strName, Entities::ComponentsList* pList);
 
     //-----------------------------------------------------------------------------------
     /// @brief	Destructor
     //-----------------------------------------------------------------------------------
-	virtual ~CollisionShape();
+	virtual ~BoxShape();
 
     //-----------------------------------------------------------------------------------
     /// @brief	Create a new component (Component creation method)
@@ -45,15 +42,15 @@ public:
     /// @param	pList	List to which the component must be added
     /// @return			The new component
     //-----------------------------------------------------------------------------------
-	static CollisionShape* create(const std::string& strName, Entities::ComponentsList* pList);
+	static BoxShape* create(const std::string& strName, Entities::ComponentsList* pList);
 
     //-----------------------------------------------------------------------------------
-    /// @brief	Cast a component to a CollisionShape
+    /// @brief	Cast a component to a BoxShape
     ///
     /// @param	pComponent	The component
-    /// @return				The component, 0 if it isn't castable to a CollisionShape
+    /// @return				The component, 0 if it isn't castable to a BoxShape
     //-----------------------------------------------------------------------------------
-	static CollisionShape* cast(Entities::Component* pComponent);
+	static BoxShape* cast(Entities::Component* pComponent);
 
 
 	//_____ Implementation of Component __________
@@ -68,20 +65,23 @@ public:
 	//_____ Methods __________
 public:
 	//-----------------------------------------------------------------------------------
-	/// @brief	Returns the Bullet's collision shape
+	/// @brief	Set the size of the box (using half-extents)
 	//-----------------------------------------------------------------------------------
-    inline btCollisionShape* getCollisionShape() const
+    void setSize(const Math::Vector3& halfExtents);
+
+	//-----------------------------------------------------------------------------------
+	/// @brief	Returns the size of the box (half-extents)
+	//-----------------------------------------------------------------------------------
+    Math::Vector3 getSize() const;
+
+	//-----------------------------------------------------------------------------------
+	/// @brief	Returns the Bullet's box shape
+	//-----------------------------------------------------------------------------------
+    inline btBoxShape* getBoxShape() const
     {
-        return m_pCollisionShape;
+        return (btBoxShape*) m_pCollisionShape;
     }
 
-
-protected:
-    void setBody(Body* pBody)
-    {
-        m_pBody = pBody;
-    }
-    
 
 	//_____ Management of the properties __________
 public:
@@ -127,13 +127,7 @@ public:
 
 	//_____ Constants __________
 public:
-	static const std::string TYPE;	        ///< Name of the type of component
-
-
-    //_____ Attributes __________
-protected:
-    btCollisionShape*   m_pCollisionShape;  ///< The Bullet shape
-    Body*               m_pBody;            ///< The rigid body using this shape (if any)
+	static const std::string TYPE;	///< Name of the type of component
 };
 
 }

@@ -35,18 +35,16 @@ Body::Body(const std::string& strName, ComponentsList* pList)
 {
     btRigidBody::btRigidBodyConstructionInfo info(0.0f, this, 0);
     m_pBody = new btRigidBody(info);
-    getWorld()->addRigidBody(this);
 }
 
 //-----------------------------------------------------------------------
 
 Body::~Body()
 {
-    if (m_pBody)
-    {
+    if (m_pShape)
         getWorld()->removeRigidBody(this);
-        delete m_pBody;
-    }
+
+    delete m_pBody;
 }
 
 //-----------------------------------------------------------------------
@@ -157,7 +155,8 @@ void Body::updateBody()
 {
     assert(m_pBody);
 
-    getWorld()->removeRigidBody(this);
+    if (m_pBody->getCollisionShape())
+        getWorld()->removeRigidBody(this);
 
     if (m_pShape)
         m_pBody->setCollisionShape(m_pShape->getCollisionShape());
@@ -175,7 +174,8 @@ void Body::updateBody()
         m_pBody->setMassProps(m_mass, inertia);
     }
 
-    getWorld()->addRigidBody(this);
+    if (m_pShape)
+        getWorld()->addRigidBody(this);
 }
 
 

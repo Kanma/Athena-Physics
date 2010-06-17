@@ -28,6 +28,8 @@ namespace Athena
         class CollisionShape;
         class PhysicalComponent;
         class World;
+        
+        class BoxShape;
     }
 }
 
