@@ -16,4 +16,7 @@
 // Support for scripting
 #define ATHENA_PHYSICS_SCRIPTING @ATHENA_PHYSICS_SCRIPTING@
 
+// Support for scripting
+#define ATHENA_PHYSICS_GRAPHICS_SUPPORT @ATHENA_PHYSICS_GRAPHICS_SUPPORT@
+
 #endif

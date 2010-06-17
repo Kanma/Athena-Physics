@@ -8,6 +8,7 @@ set(SRCS Body.cpp
          CylinderShape.cpp
          PhysicalComponent.cpp
          SphereShape.cpp
+         StaticTriMeshShape.cpp
          World.cpp
 )
 

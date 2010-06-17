@@ -34,6 +34,7 @@ namespace Athena
         class ConeShape;
         class CylinderShape;
         class SphereShape;
+        class StaticTriMeshShape;
     }
 }
 
