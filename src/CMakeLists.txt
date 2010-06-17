@@ -1,5 +1,6 @@
 # List the source files
 set(SRCS Body.cpp
+         CollisionShape.cpp
          Conversions.cpp
          PhysicalComponent.cpp
          World.cpp

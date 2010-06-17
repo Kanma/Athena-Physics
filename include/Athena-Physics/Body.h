@@ -25,6 +25,24 @@ namespace Physics {
 ///        This is an one-way interaction, the velocity is computed using the timestep
 ///        and previous and current world transform.
 ///
+/// To be used in a physical simulation, an entity must have a rigid body component (Body),
+/// with a collision shape component assigned to it (CollisionShape, see
+/// Body::setCollisionShape). Both MUST have the same transforms origin!
+///
+/// This transforms origin is the center of mass of the physical representation of the
+/// entity. If the collision shape shouldn't be centered on the center of mass (the
+/// default), use a CompoundShape component and another Transforms one to shift it.
+///
+/// The CompoundShape component can be used to combine several collision shapes. In that
+/// case, each of those shapes can have its own Transforms component, which must be
+/// relative to the center of mass (the transforms origin of the body).
+///
+/// Remember that the physical simulation will move the dynamic rigid bodies by changing
+/// the (world) position and orientation of the transforms origin of the Body component,
+/// not the one of the entity. You must then be carefull when choosing the layout of
+/// components of an entity. The simplest setup is to use the transforms of the entity as
+/// the transforms origin of the Body (and its collision shape). 
+///
 /// Dynamic rigid bodies are automatically deactivated when the velocity is below a 
 /// threshold for a given time. Deactivated (sleeping) rigid bodies don't take any
 /// processing time, except a minor broadphase collision detection impact (to allow
@@ -135,12 +153,15 @@ public:
 	//-----------------------------------------------------------------------------------
 	/// @brief	Set the collision shape
 	//-----------------------------------------------------------------------------------
-    // void setCollisionShape(CollisionShape* pShape);
+    void setCollisionShape(CollisionShape* pShape);
 
 	//-----------------------------------------------------------------------------------
 	/// @brief	Retrieve the collision shape
 	//-----------------------------------------------------------------------------------
-    // CollisionShape* getCollisionShape() const;
+    inline CollisionShape* getCollisionShape() const
+    {
+        return m_pShape;
+    }
 
 	//-----------------------------------------------------------------------------------
 	/// @brief	Returns the Bullet's rigid body
@@ -156,7 +177,7 @@ protected:
 
 	//_____ Slots __________
 protected:
-//	void onCollisionShapeDestroyed(Utils::Variant* pValue);
+	void onCollisionShapeDestroyed(Utils::Variant* pValue);
 
 
 	//_____ Management of the properties __________
@@ -210,6 +231,7 @@ public:
 protected:
     btRigidBody*    m_pBody;        ///< The body
     Math::Real      m_mass;         ///< The mass of the body
+    CollisionShape* m_pShape;       ///< The collision shape
 };
 
 }

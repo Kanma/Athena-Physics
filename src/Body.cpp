@@ -6,15 +6,19 @@
 
 #include <Athena-Physics/Body.h>
 #include <Athena-Physics/World.h>
+#include <Athena-Physics/CollisionShape.h>
 #include <Athena-Physics/Conversions.h>
 #include <Athena-Entities/Transforms.h>
+#include <Athena-Entities/Signals.h>
 #include <Athena-Math/MathUtils.h>
+#include <Athena-Core/Signals/SignalsList.h>
 
 using namespace Athena;
 using namespace Athena::Physics;
 using namespace Athena::Entities;
 using namespace Athena::Utils;
 using namespace Athena::Math;
+using namespace Athena::Signals;
 using namespace std;
 
 
@@ -27,7 +31,7 @@ const std::string Body::TYPE = "Athena/Physics/Body";
 /***************************** CONSTRUCTION / DESTRUCTION ******************************/
 
 Body::Body(const std::string& strName, ComponentsList* pList)
-: PhysicalComponent(strName, pList), m_pBody(0), m_mass(0.0f)
+: PhysicalComponent(strName, pList), m_pBody(0), m_mass(0.0f), m_pShape(0)
 {
     btRigidBody::btRigidBodyConstructionInfo info(0.0f, this, 0);
     m_pBody = new btRigidBody(info);
@@ -117,25 +121,69 @@ void Body::setMass(Math::Real mass)
 
 //-----------------------------------------------------------------------
 
+void Body::setCollisionShape(CollisionShape* pShape)
+{
+    assert(!pShape || (pShape->getTransformsOrigin() == getTransformsOrigin()));
+    
+    if (pShape == m_pShape)
+        return;
+        
+	// Unregister to the signals of the previous shape
+	if (m_pShape)
+	{
+		SignalsList* pSignals = m_pShape->getSignalsList();
+		pSignals->disconnect(SIGNAL_COMPONENT_DESTROYED, this, &Body::onCollisionShapeDestroyed);
+        
+        m_pShape->setBody(0);
+    }
+    
+    m_pShape = pShape;
+    
+    // Register to the signals of the new origin
+	if (m_pShape)
+	{
+		SignalsList* pSignals = m_pShape->getSignalsList();
+		pSignals->connect(SIGNAL_COMPONENT_DESTROYED, this, &Body::onCollisionShapeDestroyed);
+
+        m_pShape->setBody(this);
+	}
+
+    updateBody();
+}
+
+//-----------------------------------------------------------------------
+
 void Body::updateBody()
 {
     assert(m_pBody);
 
     getWorld()->removeRigidBody(this);
 
-//    if (!getCollisionShape() || isKinematic() || MathUtils::RealEqual(m_mass, 0.0f, 1e-6f))
-    if (isKinematic() || MathUtils::RealEqual(m_mass, 0.0f, 1e-6f))
+    if (m_pShape)
+        m_pBody->setCollisionShape(m_pShape->getCollisionShape());
+    else
+        m_pBody->setCollisionShape(0);
+
+    if (!m_pShape || isKinematic() || MathUtils::RealEqual(m_mass, 0.0f, 1e-6f))
     {
         m_pBody->setMassProps(0.0f, btVector3(0.0f, 0.0f, 0.0f));
     }
     else
     {
         btVector3 inertia;
-//        getCollisionShape()->calculateLocalInertia(m_mass, inertia);
+        m_pShape->getCollisionShape()->calculateLocalInertia(m_mass, inertia);
         m_pBody->setMassProps(m_mass, inertia);
     }
 
     getWorld()->addRigidBody(this);
+}
+
+
+/**************************************** SLOTS ****************************************/
+
+void Body::onCollisionShapeDestroyed(Utils::Variant* pValue)
+{
+    setCollisionShape(0);
 }
 
 
@@ -159,6 +207,10 @@ Utils::PropertiesList* Body::getProperties() const
 
     // Mass
     pProperties->set("mass", new Variant(m_mass));
+
+    // Shape
+    if (m_pShape)
+        pProperties->set("shape", new Variant(m_pShape->getID().toString()));
 
 	// Returns the list
 	return pProperties;
@@ -187,6 +239,9 @@ bool Body::setProperty(const std::string& strName, Utils::Variant* pValue)
 	assert(!strName.empty());
 	assert(pValue);
 
+    // Declarations
+    bool bUsed = true;
+
     // Type
 	if (strName == "type")
 	{
@@ -199,8 +254,27 @@ bool Body::setProperty(const std::string& strName, Utils::Variant* pValue)
 		setMass(pValue->toFloat());
 	}
 
+	// Shape
+	else if (strName == "shape")
+	{
+        tComponentID id(pValue->toString());
+
+        if (id.type == COMP_PHYSICAL)
+        {
+            CollisionShape* pShape = CollisionShape::cast(m_pList->getComponent(id));
+            if (pShape)
+                setCollisionShape(pShape);
+            else
+                bUsed = false;
+        }
+        else
+        {
+            setCollisionShape(0);
+        }
+	}
+
 	// Destroy the value
 	delete pValue;
 
-	return true;
+	return bUsed;
 }
