@@ -3,6 +3,7 @@ set(SRCS Body.cpp
          BoxShape.cpp
          CapsuleShape.cpp
          CollisionShape.cpp
+         ConeShape.cpp
          Conversions.cpp
          CylinderShape.cpp
          PhysicalComponent.cpp

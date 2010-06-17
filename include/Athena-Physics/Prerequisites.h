@@ -31,6 +31,7 @@ namespace Athena
         
         class BoxShape;
         class CapsuleShape;
+        class ConeShape;
         class CylinderShape;
         class SphereShape;
     }
