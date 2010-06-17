@@ -4,6 +4,7 @@ set(SRCS Body.cpp
          CapsuleShape.cpp
          CollisionShape.cpp
          Conversions.cpp
+         CylinderShape.cpp
          PhysicalComponent.cpp
          SphereShape.cpp
          World.cpp
