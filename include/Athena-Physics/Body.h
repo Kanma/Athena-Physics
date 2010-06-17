@@ -1,73 +1,66 @@
-/** @file	World.h
+/** @file	Body.h
 	@author	Philip Abbet
 
-	Declaration of the class 'Athena::Physics::World'
+	Declaration of the class 'Athena::Physics::Body'
 */
 
-#ifndef _ATHENA_PHYSICS_WORLD_H_
-#define _ATHENA_PHYSICS_WORLD_H_
+#ifndef _ATHENA_PHYSICS_BODY_H_
+#define _ATHENA_PHYSICS_BODY_H_
 
 #include <Athena-Physics/Prerequisites.h>
 #include <Athena-Physics/PhysicalComponent.h>
-#include <BulletSoftBody/btSoftRigidDynamicsWorld.h>
 
 namespace Athena {
 namespace Physics {
 
 
 //---------------------------------------------------------------------------------------
-/// @brief	Represents a physical world, used to perform a physical simulation
+/// @brief	Represents a rigid body
 ///
-/// There can be only one physical world per scene, and it MUST be a component of the
-/// scene itself (not of an entity). Additionally, the name of the world component will
-/// always be equal to World::DEFAULT_NAME.
+/// There are 3 types of rigid bodies: 
+///   - A) Dynamic rigid bodies, with positive mass. Motion is controlled by rigid body
+///        dynamics.
+///   - B) Fixed objects with zero mass. They are not moving (basically collision objects)
+///   - C) Kinematic objects, which are objects without mass, but the user can move them.
+///        This is an one-way interaction, the velocity is computed using the timestep
+///        and previous and current world transform.
+///
+/// Dynamic rigid bodies are automatically deactivated when the velocity is below a 
+/// threshold for a given time. Deactivated (sleeping) rigid bodies don't take any
+/// processing time, except a minor broadphase collision detection impact (to allow
+/// active objects to activate/wake up sleeping objects).
 //---------------------------------------------------------------------------------------
-class ATHENA_SYMBOL World: public PhysicalComponent
+class ATHENA_SYMBOL Body: public PhysicalComponent, public btMotionState
 {
-    friend class Body;
-    
-    
-    //_____ Internal types __________
-public:
-    //-----------------------------------------------------------------------------------
-    /// @brief	The available type of worlds. Determines the kind of physical simulation
-    ///         performed
-    //-----------------------------------------------------------------------------------
-    enum tType
-    {
-        WORLD_RIGID_BODY,   ///< Rigid body simulation (the default)
-        WORLD_SOFT_BODY,    ///< Soft body simulation
-    };
-    
-
 	//_____ Construction / Destruction __________
 public:
     //-----------------------------------------------------------------------------------
     /// @brief	Constructor
+    /// @param	strName		Name of the component
     //-----------------------------------------------------------------------------------
-	World(Entities::ComponentsList* pList);
+	Body(const std::string& strName, Entities::ComponentsList* pList);
 
     //-----------------------------------------------------------------------------------
     /// @brief	Destructor
     //-----------------------------------------------------------------------------------
-	virtual ~World();
+	virtual ~Body();
 
     //-----------------------------------------------------------------------------------
     /// @brief	Create a new component (Component creation method)
     ///
-    /// @param	strName	Name of the component (not used, kept for compatibility)
+    /// @param	strName	Name of the component
     /// @param	pList	List to which the component must be added
     /// @return			The new component
     //-----------------------------------------------------------------------------------
-	static World* create(const std::string& strName, Entities::ComponentsList* pList);
+	static Body* create(const std::string& strName, Entities::ComponentsList* pList);
 
     //-----------------------------------------------------------------------------------
-    /// @brief	Cast a component to a World
+    /// @brief	Cast a component to a Body
     ///
     /// @param	pComponent	The component
-    /// @return				The component, 0 if it isn't castable to a World
+    /// @return				The component, 0 if it isn't castable to a Body
     //-----------------------------------------------------------------------------------
-	static World* cast(Entities::Component* pComponent);
+	static Body* cast(Entities::Component* pComponent);
 
 
 	//_____ Implementation of Component __________
@@ -79,70 +72,92 @@ public:
 	virtual const std::string getType() const { return TYPE; }
 
 
+	//_____ Implementation of btMotionState __________
+public:
+	//-----------------------------------------------------------------------------------
+	/// @brief	Retrieves the world transformations of the body (static and kinematic body)
+	//-----------------------------------------------------------------------------------
+    virtual void getWorldTransform(btTransform& worldTrans) const;
+
+	//-----------------------------------------------------------------------------------
+	/// @brief	Sets the world transformations of the body (dynamic body)
+	//-----------------------------------------------------------------------------------
+	virtual void setWorldTransform(const btTransform& worldTrans);
+
+
 	//_____ Methods __________
 public:
 	//-----------------------------------------------------------------------------------
-	/// @brief	Set the type of the world
+	/// @brief	Indicates that the rigid body is a kinematic one (or not)
+	///
+	/// @remark When bKinematic is false, if the body has a mass, it becomes a dynamic
+	///         one, otherwise it becomes a static one.
 	//-----------------------------------------------------------------------------------
-    void setWorldType(tType type);
+    void setKinematic(bool bKinematic = true);
 
 	//-----------------------------------------------------------------------------------
-	/// @brief	Returns the type of the world
+	/// @brief	Indicates if the body is a dynamic one
 	//-----------------------------------------------------------------------------------
-    inline tType getWorldType() const
+    inline bool isKinematic() const
     {
-        return m_type;
+        return m_pBody->isKinematicObject();
     }
 
 	//-----------------------------------------------------------------------------------
-	/// @brief	Set the gravity
+	/// @brief	Indicates if the body is a static one
 	//-----------------------------------------------------------------------------------
-	void setGravity(const Math::Vector3& gravity);
-
-	//-----------------------------------------------------------------------------------
-	/// @brief	Retrieve the gravity
-	//-----------------------------------------------------------------------------------
-	Math::Vector3 getGravity();
-
-	//-----------------------------------------------------------------------------------
-	/// @brief	Proceeds the simulation over 'timeStep' seconds
-    ///
-    /// By default, the timestep is divided in constant substeps of each 'fixedTimeStep'.
-    /// In order to keep the simulation real-time, the maximum number of substeps can be
-    /// clamped to 'nbMaxSubSteps'. You can disable subdividing the timestep/substepping
-    /// by passing nbMaxSubSteps=0 as second argument to stepSimulation, but in that case
-    /// you have to keep the timeStep constant.
-    ///
-    /// @return The number of substeps simulated
-    //-----------------------------------------------------------------------------------
-	unsigned int stepSimulation(Math::Real timeStep, unsigned int nbMaxSubSteps = 1,
-	                            Math::Real fixedTimeStep = Math::Real(1.0 / 60.0));
-
-	//-----------------------------------------------------------------------------------
-	/// @brief	Returns the Bullet's rigid body simulation world
-	//-----------------------------------------------------------------------------------
-    inline btDiscreteDynamicsWorld* getRigidBodyWorld()
+    inline bool isStatic() const
     {
-        if (!m_pWorld)
-            createWorld();
-
-        return m_pWorld;
+        return m_pBody->isStaticObject();
     }
 
 	//-----------------------------------------------------------------------------------
-	/// @brief	Returns the Bullet's soft body simulation world (can be 0, see
-	///         getWorldType())
+	/// @brief	Indicates if the body is a dynamic one
 	//-----------------------------------------------------------------------------------
-    inline btSoftRigidDynamicsWorld* getSoftBodyWorld() const
+    inline bool isDynamic() const
     {
-        return dynamic_cast<btSoftRigidDynamicsWorld*>(m_pWorld);
+        return !m_pBody->isStaticOrKinematicObject();
+    }
+    
+	//-----------------------------------------------------------------------------------
+	/// @brief	Set the mass of the body
+	//-----------------------------------------------------------------------------------
+    void setMass(Math::Real mass);
+
+	//-----------------------------------------------------------------------------------
+	/// @brief	Returns the mass of the body
+	//-----------------------------------------------------------------------------------
+    inline Math::Real getMass() const
+    {
+        return m_mass;
+    }
+
+	//-----------------------------------------------------------------------------------
+	/// @brief	Set the collision shape
+	//-----------------------------------------------------------------------------------
+    // void setCollisionShape(CollisionShape* pShape);
+
+	//-----------------------------------------------------------------------------------
+	/// @brief	Retrieve the collision shape
+	//-----------------------------------------------------------------------------------
+    // CollisionShape* getCollisionShape() const;
+
+	//-----------------------------------------------------------------------------------
+	/// @brief	Returns the Bullet's rigid body
+	//-----------------------------------------------------------------------------------
+    inline btRigidBody* getRigidBody() const
+    {
+        return m_pBody;
     }
 
 protected:
-    void createWorld();
-    void addRigidBody(Body* pBody);
-    void removeRigidBody(Body* pBody);
-    
+    void updateBody();
+
+
+	//_____ Slots __________
+protected:
+//	void onCollisionShapeDestroyed(Utils::Variant* pValue);
+
 
 	//_____ Management of the properties __________
 public:
@@ -188,18 +203,13 @@ public:
 
 	//_____ Constants __________
 public:
-	static const std::string TYPE;		    ///< Name of the type of component
-	static const std::string DEFAULT_NAME;	///< Default name of the world
+	static const std::string TYPE;	///< Name of the type of component
 
 
     //_____ Attributes __________
 protected:
-    tType                       m_type;                     ///< Type of world
-    btDiscreteDynamicsWorld*    m_pWorld;                   ///< The world doing the simulation
-    btDispatcher*               m_pDispatcher;
-    btBroadphaseInterface*      m_pBroadphase;
-    btConstraintSolver*         m_pConstraintSolver;
-    btCollisionConfiguration*   m_pCollisionConfiguration;
+    btRigidBody*    m_pBody;        ///< The body
+    Math::Real      m_mass;         ///< The mass of the body
 };
 
 }

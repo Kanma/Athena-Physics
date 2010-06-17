@@ -21,7 +21,7 @@ btVector3 toBullet(const Math::Vector3& v);
 btQuaternion toBullet(const Math::Quaternion& q);
 
 Math::Vector3 fromBullet(const btVector3& v);
-Math::Quaternion Bullet(const btQuaternion& q);
+Math::Quaternion fromBullet(const btQuaternion& q);
 
 }
 }

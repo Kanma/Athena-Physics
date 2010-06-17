@@ -1,5 +1,6 @@
 # List the source files
-set(SRCS Conversions.cpp
+set(SRCS Body.cpp
+         Conversions.cpp
          PhysicalComponent.cpp
          World.cpp
 )

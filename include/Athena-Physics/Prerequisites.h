@@ -24,6 +24,8 @@ namespace Athena
 	//------------------------------------------------------------------------------------
     namespace Physics
     {
+        class Body;
+        class CollisionShape;
         class PhysicalComponent;
         class World;
     }

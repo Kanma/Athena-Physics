@@ -5,6 +5,7 @@
 */
 
 #include <Athena-Physics/World.h>
+#include <Athena-Physics/Body.h>
 #include <Athena-Physics/Conversions.h>
 
 using namespace Athena;
@@ -126,6 +127,30 @@ void World::createWorld()
             m_pWorld = new btSoftRigidDynamicsWorld(m_pDispatcher, m_pBroadphase, m_pConstraintSolver, m_pCollisionConfiguration);
             break;
     }
+}
+
+//-----------------------------------------------------------------------
+
+void World::addRigidBody(Body* pBody)
+{
+    // Assertions
+    assert(pBody);
+    
+    if (!m_pWorld)
+        createWorld();
+
+    m_pWorld->addRigidBody(pBody->getRigidBody());
+}
+
+//-----------------------------------------------------------------------
+
+void World::removeRigidBody(Body* pBody)
+{
+    // Assertions
+    assert(pBody);
+    assert(m_pWorld);
+    
+    m_pWorld->removeRigidBody(pBody->getRigidBody());
 }
 
 
