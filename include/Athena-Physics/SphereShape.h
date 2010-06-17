@@ -74,7 +74,7 @@ public:
     Math::Real getRadius() const;
 
 	//-----------------------------------------------------------------------------------
-	/// @brief	Returns the Bullet's box shape
+	/// @brief	Returns the Bullet's sphere shape
 	//-----------------------------------------------------------------------------------
     inline btSphereShape* getSphereShape() const
     {

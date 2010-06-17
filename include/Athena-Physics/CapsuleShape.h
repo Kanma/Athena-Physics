@@ -117,7 +117,7 @@ public:
     }
 
 	//-----------------------------------------------------------------------------------
-	/// @brief	Returns the Bullet's box shape
+	/// @brief	Returns the Bullet's capsule shape
 	//-----------------------------------------------------------------------------------
     inline btCapsuleShape* getCapsuleShape() const
     {
