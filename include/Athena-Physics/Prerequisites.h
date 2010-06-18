@@ -35,13 +35,13 @@ namespace Athena
         class CylinderShape;
         class SphereShape;
         class StaticTriMeshShape;
+
+
+    	//------------------------------------------------------------------------------------
+    	/// @brief	Initialize the Physics module
+    	//------------------------------------------------------------------------------------
+        extern void initialize();
     }
-
-
-	//------------------------------------------------------------------------------------
-	/// @brief	Initialize the Physics module
-	//------------------------------------------------------------------------------------
-    extern void initialize();
 }
 
 #endif
