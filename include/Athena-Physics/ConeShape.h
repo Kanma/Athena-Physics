@@ -4,8 +4,8 @@
 	Declaration of the class 'Athena::Physics::ConeShape'
 */
 
-#ifndef _ATHENA_PHYSICS_SPHERESHAPE_H_
-#define _ATHENA_PHYSICS_SPHERESHAPE_H_
+#ifndef _ATHENA_PHYSICS_CONESHAPE_H_
+#define _ATHENA_PHYSICS_CONESHAPE_H_
 
 #include <Athena-Physics/Prerequisites.h>
 #include <Athena-Physics/CollisionShape.h>

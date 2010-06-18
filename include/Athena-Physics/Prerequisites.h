@@ -36,6 +36,12 @@ namespace Athena
         class SphereShape;
         class StaticTriMeshShape;
     }
+
+
+	//------------------------------------------------------------------------------------
+	/// @brief	Initialize the Physics module
+	//------------------------------------------------------------------------------------
+    extern void initialize();
 }
 
 #endif

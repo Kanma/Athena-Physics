@@ -4,8 +4,8 @@
 	Declaration of the class 'Athena::Physics::CapsuleShape'
 */
 
-#ifndef _ATHENA_PHYSICS_SPHERESHAPE_H_
-#define _ATHENA_PHYSICS_SPHERESHAPE_H_
+#ifndef _ATHENA_PHYSICS_CAPSULESHAPE_H_
+#define _ATHENA_PHYSICS_CAPSULESHAPE_H_
 
 #include <Athena-Physics/Prerequisites.h>
 #include <Athena-Physics/CollisionShape.h>
