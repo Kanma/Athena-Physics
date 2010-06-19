@@ -31,11 +31,8 @@ namespace Physics {
 ///
 /// This transforms origin is the center of mass of the physical representation of the
 /// entity. If the collision shape shouldn't be centered on the center of mass (the
-/// default), use a CompoundShape component and another Transforms one to shift it.
-///
-/// The CompoundShape component can be used to combine several collision shapes. In that
-/// case, each of those shapes can have its own Transforms component, which must be
-/// relative to the center of mass (the transforms origin of the body).
+/// default), use a CompoundShape component. The CompoundShape component can be used to
+/// combine several primitive convex collision shapes.
 ///
 /// Remember that the physical simulation will move the dynamic rigid bodies by changing
 /// the (world) position and orientation of the transforms origin of the Body component,

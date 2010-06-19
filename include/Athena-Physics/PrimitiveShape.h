@@ -1,11 +1,11 @@
-/** @file	CylinderShape.h
+/** @file	PrimitiveShape.h
 	@author	Philip Abbet
 
-	Declaration of the class 'Athena::Physics::CylinderShape'
+	Declaration of the class 'Athena::Physics::PrimitiveShape'
 */
 
-#ifndef _ATHENA_PHYSICS_SPHERESHAPE_H_
-#define _ATHENA_PHYSICS_SPHERESHAPE_H_
+#ifndef _ATHENA_PHYSICS_PRIMITIVESHAPE_H_
+#define _ATHENA_PHYSICS_PRIMITIVESHAPE_H_
 
 #include <Athena-Physics/Prerequisites.h>
 #include <Athena-Physics/CollisionShape.h>
@@ -15,17 +15,29 @@ namespace Physics {
 
 
 //---------------------------------------------------------------------------------------
-/// @brief	Represents a cylinder shape around an axis (X, Y or Z).
+/// @brief	Primitive convex shape
 ///
-/// By default, the following values are used:
-///   - axis:   Y
-///   - radius: 0.25
-///   - height: 1.0
+/// The actual shape and its dimensions can be parametrized
 //---------------------------------------------------------------------------------------
-class ATHENA_SYMBOL CylinderShape: public CollisionShape
+class ATHENA_SYMBOL PrimitiveShape: public CollisionShape
 {
     //_____ Internal types __________
 public:
+    //-----------------------------------------------------------------------------------
+    /// @brief	The available shapes
+    //-----------------------------------------------------------------------------------
+    enum tShape
+    {
+        SHAPE_BOX,
+        SHAPE_CAPSULE,
+        SHAPE_CONE,
+        SHAPE_CYLINDER,
+        SHAPE_SPHERE,
+    };
+
+    //-----------------------------------------------------------------------------------
+    /// @brief	Some shapes need an axis
+    //-----------------------------------------------------------------------------------
     enum tAxis
     {
         AXIS_X,
@@ -40,12 +52,12 @@ public:
     /// @brief	Constructor
     /// @param	strName		Name of the component
     //-----------------------------------------------------------------------------------
-	CylinderShape(const std::string& strName, Entities::ComponentsList* pList);
+	PrimitiveShape(const std::string& strName, Entities::ComponentsList* pList);
 
     //-----------------------------------------------------------------------------------
     /// @brief	Destructor
     //-----------------------------------------------------------------------------------
-	virtual ~CylinderShape();
+	virtual ~PrimitiveShape();
 
     //-----------------------------------------------------------------------------------
     /// @brief	Create a new component (Component creation method)
@@ -54,15 +66,15 @@ public:
     /// @param	pList	List to which the component must be added
     /// @return			The new component
     //-----------------------------------------------------------------------------------
-	static CylinderShape* create(const std::string& strName, Entities::ComponentsList* pList);
+	static PrimitiveShape* create(const std::string& strName, Entities::ComponentsList* pList);
 
     //-----------------------------------------------------------------------------------
-    /// @brief	Cast a component to a CylinderShape
+    /// @brief	Cast a component to a PrimitiveShape
     ///
     /// @param	pComponent	The component
-    /// @return				The component, 0 if it isn't castable to a CylinderShape
+    /// @return				The component, 0 if it isn't castable to a PrimitiveShape
     //-----------------------------------------------------------------------------------
-	static CylinderShape* cast(Entities::Component* pComponent);
+	static PrimitiveShape* cast(Entities::Component* pComponent);
 
 
 	//_____ Implementation of Component __________
@@ -77,23 +89,90 @@ public:
 	//_____ Methods __________
 public:
 	//-----------------------------------------------------------------------------------
-	/// @brief	Set the dimensions of the cylinder
+	/// @brief	Create a box shape
+	///
+    /// @param	size	Dimensions of the box
 	//-----------------------------------------------------------------------------------
-    void setDimensions(const Math::Real& radius, const Math::Real& height,
+    void createBox(const Math::Vector3& size);
+
+	//-----------------------------------------------------------------------------------
+	/// @brief	Create a capsule shape
+	///
+    /// @param	radius	Radius of the half-spheres
+    /// @param	height	Distance between the center of each half-sphere of the capsule
+    /// @param	axis	Axis of the capsule
+    ///
+    /// @note   The total height is 'height + 2 * radius'
+    ///
+    /// @remark The CapsuleShape is a convex hull of two spheres. See MultiSphereShape for
+    /// a more general collision shape that takes the convex hull of multiple spheres.
+    //-----------------------------------------------------------------------------------
+    void createCapsule(const Math::Real& radius, const Math::Real& height,
                        tAxis axis = AXIS_Y);
 
 	//-----------------------------------------------------------------------------------
-	/// @brief	Returns the radius of the cylinder
+	/// @brief	Create a cone shape
+	///
+    /// @param	radius	Radius of the base of the cone
+    /// @param	height	Height of the cone
+    /// @param	axis	Axis of the cone
+    //-----------------------------------------------------------------------------------
+    void createCone(const Math::Real& radius, const Math::Real& height,
+                    tAxis axis = AXIS_Y);
+
+	//-----------------------------------------------------------------------------------
+	/// @brief	Create a cylinder shape
+	///
+    /// @param	radius	Radius of the cylinder
+    /// @param	height	Height of the cylinder
+    /// @param	axis	Axis of the cylinder
+    //-----------------------------------------------------------------------------------
+    void createCylinder(const Math::Real& radius, const Math::Real& height,
+                        tAxis axis = AXIS_Y);
+
+	//-----------------------------------------------------------------------------------
+	/// @brief	Create a sphere shape
+	///
+    /// @param	radius	Radius of the sphere
+    //-----------------------------------------------------------------------------------
+    void createSphere(const Math::Real& radius);
+
+	//-----------------------------------------------------------------------------------
+	/// @brief	Returns the dimensions of the shape
+	///
+	/// Supported shapes:
+	///   - Box
+	//-----------------------------------------------------------------------------------
+    Math::Vector3 getSize() const;
+
+	//-----------------------------------------------------------------------------------
+	/// @brief	Returns the radius of the shape
+	///
+	/// Supported shapes:
+	///   - Capsule
+	///   - Cone
+	///   - Cylinder
+	///   - Sphere
 	//-----------------------------------------------------------------------------------
     Math::Real getRadius() const;
 
 	//-----------------------------------------------------------------------------------
-	/// @brief	Returns the height of the cylinder
+	/// @brief	Returns the height of the shape
+	///
+	/// Supported shapes:
+	///   - Capsule
+	///   - Cone
+	///   - Cylinder
 	//-----------------------------------------------------------------------------------
     Math::Real getHeight() const;
 
 	//-----------------------------------------------------------------------------------
-	/// @brief	Returns the axis of the cylinder
+	/// @brief	Returns the axis of the shape
+	///
+	/// Supported shapes:
+	///   - Capsule
+	///   - Cone
+	///   - Cylinder
 	//-----------------------------------------------------------------------------------
     inline tAxis getAxis() const
     {
@@ -101,11 +180,11 @@ public:
     }
 
 	//-----------------------------------------------------------------------------------
-	/// @brief	Returns the Bullet's cylinder shape
+	/// @brief	Returns the type of the shape
 	//-----------------------------------------------------------------------------------
-    inline btCylinderShape* getCylinderShape() const
+    inline tShape getShape() const
     {
-        return (btCylinderShape*) m_pCollisionShape;
+        return m_shape;
     }
 
 
@@ -158,7 +237,8 @@ public:
 
     //_____ Attributes __________
 protected:
-    tAxis m_axis;                   ///< Axis of the cylinder
+    tShape  m_shape;                ///< Type of the shape
+    tAxis   m_axis;                 ///< Axis of the shape
 };
 
 }

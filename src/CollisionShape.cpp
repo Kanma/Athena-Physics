@@ -6,6 +6,7 @@
 
 #include <Athena-Physics/CollisionShape.h>
 #include <Athena-Physics/World.h>
+#include <Athena-Physics/Body.h>
 #include <Athena-Physics/Conversions.h>
 #include <Athena-Entities/Transforms.h>
 #include <Athena-Math/MathUtils.h>
@@ -35,6 +36,9 @@ CollisionShape::CollisionShape(const std::string& strName, ComponentsList* pList
 
 CollisionShape::~CollisionShape()
 {
+    if (m_pBody)
+        m_pBody->setCollisionShape(0);
+    
     delete m_pCollisionShape;
 }
 

@@ -29,11 +29,7 @@ namespace Athena
         class PhysicalComponent;
         class World;
         
-        class BoxShape;
-        class CapsuleShape;
-        class ConeShape;
-        class CylinderShape;
-        class SphereShape;
+        class PrimitiveShape;
         class StaticTriMeshShape;
     }
 }

@@ -1,13 +1,9 @@
 # List the source files
 set(SRCS Body.cpp
-         BoxShape.cpp
-         CapsuleShape.cpp
          CollisionShape.cpp
-         ConeShape.cpp
          Conversions.cpp
-         CylinderShape.cpp
          PhysicalComponent.cpp
-         SphereShape.cpp
+         PrimitiveShape.cpp
          StaticTriMeshShape.cpp
          World.cpp
 )
