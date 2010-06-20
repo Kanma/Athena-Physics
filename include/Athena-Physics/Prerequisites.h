@@ -32,6 +32,12 @@ namespace Athena
         class CompoundShape;
         class PrimitiveShape;
         class StaticTriMeshShape;
+
+
+    	//------------------------------------------------------------------------------------
+    	/// @brief	Initialize the Physics module
+    	//------------------------------------------------------------------------------------
+        extern void initialize();
     }
 }
 
