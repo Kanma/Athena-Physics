@@ -2,6 +2,7 @@
 set(SRCS Body.cpp
          CollisionShape.cpp
          Conversions.cpp
+         CompoundShape.cpp
          PhysicalComponent.cpp
          PrimitiveShape.cpp
          StaticTriMeshShape.cpp

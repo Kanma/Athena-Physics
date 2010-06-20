@@ -124,7 +124,7 @@ void PrimitiveShape::createCone(const Math::Real& radius, const Math::Real& heig
 
     delete m_pCollisionShape;
     
-    switch (m_axis)
+    switch (axis)
     {
         case AXIS_X:
             m_pCollisionShape = new btConeShapeX(radius, height);
@@ -161,7 +161,7 @@ void PrimitiveShape::createCylinder(const Math::Real& radius, const Math::Real& 
 
     delete m_pCollisionShape;
     
-    switch (m_axis)
+    switch (axis)
     {
         case AXIS_X:
             m_pCollisionShape = new btCylinderShapeX(btVector3(height, radius, radius));

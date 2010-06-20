@@ -29,6 +29,7 @@ namespace Athena
         class PhysicalComponent;
         class World;
         
+        class CompoundShape;
         class PrimitiveShape;
         class StaticTriMeshShape;
     }
