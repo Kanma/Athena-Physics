@@ -66,10 +66,11 @@ Body* Body::cast(Component* pComponent)
 
 void Body::getWorldTransform(btTransform& worldTrans) const
 {
-    if (m_pTransformsOrigin)
+    Transforms* pTransforms = getTransforms();
+    if (pTransforms)
     {
-        worldTrans = btTransform(toBullet(m_pTransformsOrigin->getWorldOrientation()),
-                                 toBullet(m_pTransformsOrigin->getWorldPosition()));
+        worldTrans = btTransform(toBullet(pTransforms->getWorldOrientation()),
+                                 toBullet(pTransforms->getWorldPosition()));
     }
 }
 
@@ -77,10 +78,11 @@ void Body::getWorldTransform(btTransform& worldTrans) const
 
 void Body::setWorldTransform(const btTransform& worldTrans)
 {
-    if (m_pTransformsOrigin)
+    Transforms* pTransforms = getTransforms();
+    if (pTransforms)
     {
-        m_pTransformsOrigin->translate(fromBullet(worldTrans.getOrigin()) - m_pTransformsOrigin->getWorldPosition(), Transforms::TS_WORLD);
-        m_pTransformsOrigin->rotate(fromBullet(worldTrans.getRotation()).Inverse() * m_pTransformsOrigin->getWorldOrientation(), Transforms::TS_WORLD);
+        pTransforms->translate(fromBullet(worldTrans.getOrigin()) - pTransforms->getWorldPosition(), Transforms::TS_WORLD);
+        pTransforms->rotate(pTransforms->getWorldOrientation().rotationTo(fromBullet(worldTrans.getRotation())), Transforms::TS_WORLD);
     }
 }
 

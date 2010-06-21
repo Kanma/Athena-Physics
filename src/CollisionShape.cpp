@@ -28,7 +28,7 @@ const std::string CollisionShape::TYPE = "Athena/Physics/CollisionShape";
 /***************************** CONSTRUCTION / DESTRUCTION ******************************/
 
 CollisionShape::CollisionShape(const std::string& strName, ComponentsList* pList)
-: PhysicalComponent(strName, pList), m_pCollisionShape(0)
+: PhysicalComponent(strName, pList), m_pCollisionShape(0), m_pBody(0)
 {
 }
 

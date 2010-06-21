@@ -27,7 +27,6 @@ const std::string StaticTriMeshShape::TYPE = "Athena/Physics/StaticTriMeshShape"
 StaticTriMeshShape::StaticTriMeshShape(const std::string& strName, ComponentsList* pList)
 : CollisionShape(strName, pList), m_sourceType(SOURCE_INDEXED_MESHES), m_indexedStrider(0)
 {
-    m_pCollisionShape = new btBvhTriangleMeshShape();
 }
 
 //-----------------------------------------------------------------------
