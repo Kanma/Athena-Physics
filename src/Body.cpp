@@ -129,7 +129,7 @@ void Body::setMass(Math::Real mass)
 
 void Body::setCollisionShape(CollisionShape* pShape)
 {
-    assert(!pShape || (pShape->getTransformsOrigin() == getTransformsOrigin()));
+    assert(!pShape || (pShape->getTransforms() == getTransforms()));
     
     if (pShape == m_pShape)
         return;
