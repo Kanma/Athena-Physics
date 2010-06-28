@@ -53,8 +53,12 @@ PhysicalComponent* PhysicalComponent::cast(Component* pComponent)
 
 World* PhysicalComponent::getWorld() const
 {
-    return dynamic_cast<World*>(m_pList->getEntity()->getScene()->getComponent(
-                                    Entities::tComponentID(Entities::COMP_PHYSICAL, World::DEFAULT_NAME)));
+    if (m_pList->getEntity())
+        return dynamic_cast<World*>(m_pList->getEntity()->getScene()->getMainComponent(Entities::COMP_PHYSICAL));
+    else if (m_pList->getScene())
+        return dynamic_cast<World*>(m_pList->getScene()->getMainComponent(Entities::COMP_PHYSICAL));
+    
+    return 0;
 }
 
 

@@ -28,8 +28,11 @@ World::World(ComponentsList* pList)
 : PhysicalComponent(DEFAULT_NAME, pList), m_type(WORLD_RIGID_BODY), m_pWorld(0),
   m_pDispatcher(0), m_pBroadphase(0), m_pConstraintSolver(0), m_pCollisionConfiguration(0)
 {
+    assert(pList);
     assert(pList->getScene());
     assert(!pList->getEntity());
+
+    pList->getScene()->_setMainComponent(this);
 }
 
 //-----------------------------------------------------------------------
@@ -41,6 +44,8 @@ World::~World()
     delete m_pBroadphase;
     delete m_pDispatcher;
     delete m_pCollisionConfiguration;
+
+    m_pList->getScene()->_resetMainComponent(COMP_PHYSICAL);
 }
 
 //-----------------------------------------------------------------------
