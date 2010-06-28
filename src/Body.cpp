@@ -186,6 +186,17 @@ void Body::updateBody()
         getWorld()->addRigidBody(this);
 }
 
+//-----------------------------------------------------------------------
+
+void Body::onTransformsChanged()
+{
+    PhysicalComponent::onTransformsChanged();
+
+    // If we don't do that, the position of the body isn't changed
+    if (isStatic())
+        m_pBody->setMotionState(m_pBody->getMotionState());
+}
+
 
 /**************************************** SLOTS ****************************************/
 

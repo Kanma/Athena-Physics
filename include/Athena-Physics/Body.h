@@ -9,6 +9,7 @@
 
 #include <Athena-Physics/Prerequisites.h>
 #include <Athena-Physics/PhysicalComponent.h>
+#include <Athena-Physics/Conversions.h>
 
 namespace Athena {
 namespace Physics {
@@ -111,7 +112,7 @@ public:
     void setKinematic(bool bKinematic = true);
 
 	//-----------------------------------------------------------------------------------
-	/// @brief	Indicates if the body is a dynamic one
+	/// @brief	Indicates if the body is a kinematic one
 	//-----------------------------------------------------------------------------------
     inline bool isKinematic() const
     {
@@ -161,6 +162,90 @@ public:
     }
 
 	//-----------------------------------------------------------------------------------
+	/// @brief	Enable/Disable the automatic deactivation of the body (when no movement
+	///         is done for a few time)
+    ///
+    /// Enabled by default
+	//-----------------------------------------------------------------------------------
+    inline void enableDeactivation(bool bEnabled)
+	{
+        m_pBody->setActivationState(bEnabled ? WANTS_DEACTIVATION : DISABLE_DEACTIVATION);
+	}
+
+	//-----------------------------------------------------------------------------------
+	/// @brief	Enable/Disable the simulation of the body
+    ///
+    /// Enabled by default
+	//-----------------------------------------------------------------------------------
+    inline void enableSimulation(bool bEnabled)
+	{
+        m_pBody->setActivationState(bEnabled ? WANTS_DEACTIVATION : DISABLE_SIMULATION);
+	}
+
+	//-----------------------------------------------------------------------------------
+	/// @brief	Sets the linear velocity of the body
+	//-----------------------------------------------------------------------------------
+    inline void setLinearVelocity(const Math::Vector3& velocity)
+	{
+        m_pBody->setLinearVelocity(toBullet(velocity));
+	}
+
+	//-----------------------------------------------------------------------------------
+	/// @brief	Returns the linear velocity of the body
+	//-----------------------------------------------------------------------------------
+    inline Math::Vector3 getLinearVelocity()
+	{
+        return fromBullet(m_pBody->getLinearVelocity());
+	}
+
+	//-----------------------------------------------------------------------------------
+	/// @brief	Sets the angular velocity of the body
+	//-----------------------------------------------------------------------------------
+    inline void setAngularVelocity(const Math::Vector3& velocity)
+	{
+        m_pBody->setAngularVelocity(toBullet(velocity));
+	}
+
+	//-----------------------------------------------------------------------------------
+	/// @brief	Returns the angular velocity of the body
+	//-----------------------------------------------------------------------------------
+    inline Math::Vector3 getAngularVelocity()
+	{
+        return fromBullet(m_pBody->getAngularVelocity());
+	}
+
+	//-----------------------------------------------------------------------------------
+	/// @brief	Modify the angular freedom of movement of the body, per axis
+	///
+	/// 0.0 means no rotation at all. Default: 1.0
+	//-----------------------------------------------------------------------------------
+    inline void setAngularFactor(const Math::Vector3& factors)
+	{
+        m_pBody->setAngularFactor(toBullet(factors));
+	}
+
+	//-----------------------------------------------------------------------------------
+	/// @brief	Modify the angular freedom of movement of the body, same value for all
+	///         the axes
+	///
+	/// 0.0 means no rotation at all. Default: 1.0
+	//-----------------------------------------------------------------------------------
+    inline void setAngularFactor(Math::Real factor)
+	{
+        m_pBody->setAngularFactor(factor);
+	}
+
+	//-----------------------------------------------------------------------------------
+	/// @brief	Returns the angular freedom of movement of the body, per axis
+	///
+	/// 0.0 means no rotation at all. Default: 1.0
+	//-----------------------------------------------------------------------------------
+	inline Math::Vector3 getAngularFactor() const
+	{
+		return fromBullet(m_pBody->getAngularFactor());
+	}
+
+	//-----------------------------------------------------------------------------------
 	/// @brief	Returns the Bullet's rigid body
 	//-----------------------------------------------------------------------------------
     inline btRigidBody* getRigidBody() const
@@ -170,6 +255,14 @@ public:
 
 protected:
     void updateBody();
+
+	//-----------------------------------------------------------------------------------
+	/// @brief	Called when the transforms affecting this component have changed
+	///
+	/// Can be called when the component isn't affected by any transforms anymore
+	/// (getTransforms() returns 0).
+	//-----------------------------------------------------------------------------------
+	virtual void onTransformsChanged();
 
 
 	//_____ Slots __________
