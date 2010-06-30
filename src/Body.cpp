@@ -35,6 +35,9 @@ Body::Body(const std::string& strName, ComponentsList* pList)
 {
     btRigidBody::btRigidBodyConstructionInfo info(0.0f, this, 0);
     m_pBody = new btRigidBody(info);
+
+	// Use the transforms of the entity by default
+	setTransforms(0);
 }
 
 //-----------------------------------------------------------------------
@@ -129,8 +132,6 @@ void Body::setMass(Math::Real mass)
 
 void Body::setCollisionShape(CollisionShape* pShape)
 {
-    assert(!pShape || (pShape->getTransforms() == getTransforms()));
-    
     if (pShape == m_pShape)
         return;
         

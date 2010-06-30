@@ -28,9 +28,9 @@ namespace Physics {
 ///
 /// To be used in a physical simulation, an entity must have a rigid body component (Body),
 /// with a collision shape component assigned to it (CollisionShape, see
-/// Body::setCollisionShape). Both MUST have the same transforms origin!
+/// Body::setCollisionShape).
 ///
-/// This transforms origin is the center of mass of the physical representation of the
+/// The transforms of the body is the center of mass of the physical representation of the
 /// entity. If the collision shape shouldn't be centered on the center of mass (the
 /// default), use a CompoundShape component. The CompoundShape component can be used to
 /// combine several primitive convex collision shapes.
@@ -39,7 +39,7 @@ namespace Physics {
 /// the (world) position and orientation of the transforms origin of the Body component,
 /// not the one of the entity. You must then be carefull when choosing the layout of
 /// components of an entity. The simplest setup is to use the transforms of the entity as
-/// the transforms origin of the Body (and its collision shape). 
+/// the transforms origin of the Body (the default). 
 ///
 /// Dynamic rigid bodies are automatically deactivated when the velocity is below a 
 /// threshold for a given time. Deactivated (sleeping) rigid bodies don't take any
