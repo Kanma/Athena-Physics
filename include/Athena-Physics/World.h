@@ -138,6 +138,14 @@ public:
         return dynamic_cast<btSoftRigidDynamicsWorld*>(m_pWorld);
     }
 
+	//-----------------------------------------------------------------------------------
+	/// @brief	Returns the Collision Manager used by this world
+	//-----------------------------------------------------------------------------------
+    inline CollisionManager* getCollisionManager() const
+    {
+        return m_pCollisionManager;
+    }
+
 protected:
     void createWorld();
     void addRigidBody(Body* pBody);
@@ -200,6 +208,7 @@ protected:
     btBroadphaseInterface*      m_pBroadphase;
     btConstraintSolver*         m_pConstraintSolver;
     btCollisionConfiguration*   m_pCollisionConfiguration;
+    CollisionManager*           m_pCollisionManager;
 };
 
 }

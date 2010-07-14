@@ -28,11 +28,16 @@ namespace Athena
         class CollisionShape;
         class PhysicalComponent;
         class World;
+        class CollisionManager;
         
         class CompoundShape;
         class PrimitiveShape;
         class StaticTriMeshShape;
 
+    	//------------------------------------------------------------------------------------
+    	/// @brief	Represents a collision group (bitwise mask, 31 possible values)
+    	//------------------------------------------------------------------------------------
+        typedef unsigned int tCollisionGroup;
 
     	//------------------------------------------------------------------------------------
     	/// @brief	Initialize the Physics module

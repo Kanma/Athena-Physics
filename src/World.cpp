@@ -7,6 +7,7 @@
 #include <Athena-Physics/World.h>
 #include <Athena-Physics/Body.h>
 #include <Athena-Physics/Conversions.h>
+#include <Athena-Physics/CollisionManager.h>
 
 using namespace Athena;
 using namespace Athena::Physics;
@@ -26,7 +27,8 @@ const std::string World::DEFAULT_NAME   = "PhysicalWorld";
 
 World::World(ComponentsList* pList)
 : PhysicalComponent(DEFAULT_NAME, pList), m_type(WORLD_RIGID_BODY), m_pWorld(0),
-  m_pDispatcher(0), m_pBroadphase(0), m_pConstraintSolver(0), m_pCollisionConfiguration(0)
+  m_pDispatcher(0), m_pBroadphase(0), m_pConstraintSolver(0), m_pCollisionConfiguration(0),
+  m_pCollisionManager(&CollisionManager::DefaultManager)
 {
     assert(pList);
     assert(pList->getScene());
@@ -63,7 +65,7 @@ World* World::cast(Component* pComponent)
 }
 
 
-/*********************************** METHODS **********************************/
+/**************************************** METHODS **************************************/
 
 void World::setWorldType(tType type)
 {
@@ -102,7 +104,13 @@ unsigned int World::stepSimulation(Math::Real timeStep, unsigned int nbMaxSubSte
     if (!m_pWorld)
         createWorld();
 
-    return m_pWorld->stepSimulation(timeStep, nbMaxSubSteps, fixedTimeStep);
+    CollisionManager::_CurrentManager = m_pCollisionManager;
+
+    bool bResult = m_pWorld->stepSimulation(timeStep, nbMaxSubSteps, fixedTimeStep);
+
+    CollisionManager::_CurrentManager = 0;
+
+    return bResult;
 }
 
 //-----------------------------------------------------------------------
@@ -116,6 +124,7 @@ void World::createWorld()
 
 	// Use the default collision dispatcher
 	m_pDispatcher = new	btCollisionDispatcher(m_pCollisionConfiguration);
+    dynamic_cast<btCollisionDispatcher*>(m_pDispatcher)->setNearCallback(&CollisionManager::customNearCallback);
 
 	m_pBroadphase = new btDbvtBroadphase();
 
@@ -132,6 +141,8 @@ void World::createWorld()
             m_pWorld = new btSoftRigidDynamicsWorld(m_pDispatcher, m_pBroadphase, m_pConstraintSolver, m_pCollisionConfiguration);
             break;
     }
+    
+    m_pWorld->getPairCache()->setOverlapFilterCallback(m_pCollisionManager);
 }
 
 //-----------------------------------------------------------------------

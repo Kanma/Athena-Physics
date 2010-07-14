@@ -31,7 +31,8 @@ const std::string Body::TYPE = "Athena/Physics/Body";
 /***************************** CONSTRUCTION / DESTRUCTION ******************************/
 
 Body::Body(const std::string& strName, ComponentsList* pList)
-: PhysicalComponent(strName, pList), m_pBody(0), m_mass(0.0f), m_pShape(0)
+: PhysicalComponent(strName, pList), m_pBody(0), m_mass(0.0f), m_pShape(0),
+  m_collisionGroup(-1)
 {
     btRigidBody::btRigidBodyConstructionInfo info(0.0f, this, 0);
     m_pBody = new btRigidBody(info);

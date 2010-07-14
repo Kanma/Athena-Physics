@@ -1,6 +1,7 @@
 # List the source files
 set(SRCS module.cpp
          Body.cpp
+         CollisionManager.cpp
          CollisionShape.cpp
          Conversions.cpp
          CompoundShape.cpp

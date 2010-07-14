@@ -253,6 +253,22 @@ public:
         return m_pBody;
     }
 
+	//-----------------------------------------------------------------------------------
+	/// @brief	Set the 'collision group' of the rigid body
+	//-----------------------------------------------------------------------------------
+    inline void setCollisionGroup(tCollisionGroup group)
+    {
+        m_collisionGroup = group;
+    }
+
+	//-----------------------------------------------------------------------------------
+	/// @brief	Returns the 'collision group' of the rigid body
+	//-----------------------------------------------------------------------------------
+    inline tCollisionGroup getCollisionGroup() const
+    {
+        return m_collisionGroup;
+    }
+
 protected:
     void updateBody();
 
@@ -319,9 +335,10 @@ public:
 
     //_____ Attributes __________
 protected:
-    btRigidBody*    m_pBody;        ///< The body
-    Math::Real      m_mass;         ///< The mass of the body
-    CollisionShape* m_pShape;       ///< The collision shape
+    btRigidBody*    m_pBody;            ///< The body
+    Math::Real      m_mass;             ///< The mass of the body
+    CollisionShape* m_pShape;           ///< The collision shape
+    tCollisionGroup m_collisionGroup;   ///< The collision group
 };
 
 }
