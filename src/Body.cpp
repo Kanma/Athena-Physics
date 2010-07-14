@@ -36,6 +36,7 @@ Body::Body(const std::string& strName, ComponentsList* pList)
 {
     btRigidBody::btRigidBodyConstructionInfo info(0.0f, this, 0);
     m_pBody = new btRigidBody(info);
+    m_pBody->setUserPointer(this);
 
 	// Use the transforms of the entity by default
 	setTransforms(0);
@@ -147,7 +148,7 @@ void Body::setCollisionShape(CollisionShape* pShape)
     
     m_pShape = pShape;
     
-    // Register to the signals of the new origin
+    // Register to the signals of the new shape
 	if (m_pShape)
 	{
 		SignalsList* pSignals = m_pShape->getSignalsList();
@@ -213,7 +214,7 @@ void Body::onCollisionShapeDestroyed(Utils::Variant* pValue)
 Utils::PropertiesList* Body::getProperties() const
 {
 	// Call the base class implementation
-	PropertiesList* pProperties = Component::getProperties();
+	PropertiesList* pProperties = PhysicalComponent::getProperties();
 
 	// Create the category belonging to this type
 	pProperties->selectCategory(TYPE, false);
@@ -249,7 +250,7 @@ bool Body::setProperty(const std::string& strCategory, const std::string& strNam
 	if (strCategory == TYPE)
 		return Body::setProperty(strName, pValue);
 
-	return Component::setProperty(strCategory, strName, pValue);
+	return PhysicalComponent::setProperty(strCategory, strName, pValue);
 }
 
 //-----------------------------------------------------------------------

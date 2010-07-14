@@ -279,7 +279,7 @@ Math::Real PrimitiveShape::getHeight() const
 Utils::PropertiesList* PrimitiveShape::getProperties() const
 {
 	// Call the base class implementation
-	PropertiesList* pProperties = Component::getProperties();
+	PropertiesList* pProperties = CollisionShape::getProperties();
 
 	// Create the category belonging to this type
 	pProperties->selectCategory(TYPE, false);
@@ -356,7 +356,7 @@ bool PrimitiveShape::setProperty(const std::string& strCategory, const std::stri
 	if (strCategory == TYPE)
 		return PrimitiveShape::setProperty(strName, pValue);
 
-	return Component::setProperty(strCategory, strName, pValue);
+	return CollisionShape::setProperty(strCategory, strName, pValue);
 }
 
 //-----------------------------------------------------------------------

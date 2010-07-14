@@ -250,7 +250,7 @@ bool StaticTriMeshShape::addMesh(unsigned int nbVertices, const Math::Vector3* p
 Utils::PropertiesList* StaticTriMeshShape::getProperties() const
 {
 	// Call the base class implementation
-	PropertiesList* pProperties = Component::getProperties();
+	PropertiesList* pProperties = CollisionShape::getProperties();
 
 	// Create the category belonging to this type
 	pProperties->selectCategory(TYPE, false);
@@ -271,7 +271,7 @@ bool StaticTriMeshShape::setProperty(const std::string& strCategory, const std::
 	if (strCategory == TYPE)
 		return StaticTriMeshShape::setProperty(strName, pValue);
 
-	return Component::setProperty(strCategory, strName, pValue);
+	return CollisionShape::setProperty(strCategory, strName, pValue);
 }
 
 //-----------------------------------------------------------------------

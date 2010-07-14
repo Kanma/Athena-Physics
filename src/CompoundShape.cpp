@@ -393,7 +393,7 @@ Utils::PropertiesList* CompoundShape::getProperties() const
     assert(m_pCollisionShape);
 
 	// Call the base class implementation
-	PropertiesList* pProperties = Component::getProperties();
+	PropertiesList* pProperties = CollisionShape::getProperties();
 
 	// Create the category belonging to this type
 	pProperties->selectCategory(TYPE, false);
@@ -482,7 +482,7 @@ bool CompoundShape::setProperty(const std::string& strCategory, const std::strin
 	if (strCategory == TYPE)
 		return CompoundShape::setProperty(strName, pValue);
 
-	return Component::setProperty(strCategory, strName, pValue);
+	return CollisionShape::setProperty(strCategory, strName, pValue);
 }
 
 //-----------------------------------------------------------------------

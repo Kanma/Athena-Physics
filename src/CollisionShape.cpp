@@ -62,7 +62,7 @@ CollisionShape* CollisionShape::cast(Component* pComponent)
 Utils::PropertiesList* CollisionShape::getProperties() const
 {
 	// Call the base class implementation
-	PropertiesList* pProperties = Component::getProperties();
+	PropertiesList* pProperties = PhysicalComponent::getProperties();
 
 	// Create the category belonging to this type
 	pProperties->selectCategory(TYPE, false);
@@ -83,7 +83,7 @@ bool CollisionShape::setProperty(const std::string& strCategory, const std::stri
 	if (strCategory == TYPE)
 		return CollisionShape::setProperty(strName, pValue);
 
-	return Component::setProperty(strCategory, strName, pValue);
+	return PhysicalComponent::setProperty(strCategory, strName, pValue);
 }
 
 //-----------------------------------------------------------------------
