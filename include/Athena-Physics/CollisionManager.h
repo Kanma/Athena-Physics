@@ -61,11 +61,16 @@ public:
     	//-------------------------------------------------------------------------------
     	/// @brief	Called for each collision pair during the narrowphase
     	///
-    	/// @param  pBody1  First body of the collision pair
-    	/// @param  pBody2  Second body of the collision pair
-    	/// @return         'true' if a collision must happen
+    	/// @param  pComponent1     First physical component of the collision pair
+    	/// @param  pComponent2     Second physical component of the collision pair
+    	/// @return                 'true' if a collision must happen
+    	///
+    	/// At the moment, the physical components can be either:
+    	///   - a rigid body (Body)
+    	///   - a ghost object (GhostObject)
     	//-------------------------------------------------------------------------------
-        virtual bool needsCollision(Body* pBody1, Body* pBody2) = 0;
+        virtual bool needsCollision(PhysicalComponent* pComponent1,
+                                    PhysicalComponent* pComponent2) = 0;
     };
 
 
@@ -139,14 +144,19 @@ public:
                                    const btDispatcherInfo& dispatchInfo);
 
 
+private:
+    static tCollisionGroup getGroupOfCollisionObject(btCollisionObject* pObject);
+    static PhysicalComponent* getComponentOfCollisionObject(btCollisionObject* pObject, tCollisionGroup &group);
+
+
 	//_____ Constants __________
-protected:
+private:
 	static const unsigned int NB_GROUPS = 32;                                       ///< Maximum number of collision groups
 	static const unsigned int NB_PAIRS  = (NB_GROUPS * NB_GROUPS + NB_GROUPS) / 2;  ///< Maximum number of collision pairs
 
 
     //_____ Internal types __________
-protected:
+private:
     enum tPairState
     {
         PAIR_DISABLED,
@@ -162,7 +172,7 @@ public:
 
 
     //_____ Attributes __________
-protected:
+private:
     tPairState          m_collisionPairs[NB_PAIRS]; ///< Holds all the collision pair infos
     tPairState*         m_indexedPairs[NB_GROUPS];  ///< Used to quickly retrieve a collision pair infos
     ICollisionFilter*   m_pFilter;                  ///< The collision filter

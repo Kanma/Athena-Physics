@@ -25,6 +25,7 @@ namespace Physics {
 class ATHENA_SYMBOL World: public PhysicalComponent
 {
     friend class Body;
+    friend class GhostObject;
     
     
     //_____ Internal types __________
@@ -38,6 +39,11 @@ public:
         WORLD_RIGID_BODY,   ///< Rigid body simulation (the default)
         WORLD_SOFT_BODY,    ///< Soft body simulation
     };
+    
+    
+    typedef std::vector<btManifoldPoint>                tContactPointsList;
+    typedef Utils::VectorIterator<tContactPointsList>   tContactPointsIterator;
+    typedef tContactPointsList::iterator                tContactPointsNativeIterator;
     
 
 	//_____ Construction / Destruction __________
@@ -146,10 +152,37 @@ public:
         return m_pCollisionManager;
     }
 
+	//-----------------------------------------------------------------------------------
+	/// @brief	Returns a list of all the contact points between two physical components
+	///
+	/// @param  pComponent1     The first component
+	/// @param  pComponent2     The second component
+	/// @retval contacts        An array of the contact points between the two components
+	///
+	/// Usage example:
+	/// @code
+	/// World::tContactPointsList contacts;
+	/// pWorld->getContacts(pComponent1, pComponent2, contacts);
+	/// for (int j = 0; j < contacts.size(); ++j)
+    /// {
+    ///     const btManifoldPoint& pt = contacts[j];
+    ///
+    ///		const btVector3& ptA = pt.getPositionWorldOnA();
+    ///		const btVector3& ptB = pt.getPositionWorldOnB();
+    ///		const btVector3& normalOnB = pt.m_normalWorldOnB;
+    ///		...
+    ///	}
+	/// @endcode
+	//-----------------------------------------------------------------------------------
+    void getContacts(PhysicalComponent* pComponent1, PhysicalComponent* pComponent2,
+                     tContactPointsList &contactPoints);
+
 protected:
     void createWorld();
     void addRigidBody(Body* pBody);
     void removeRigidBody(Body* pBody);
+    void addGhostObject(GhostObject* pGhostObject);
+    void removeGhostObject(GhostObject* pGhostObject);
     
 
 	//_____ Management of the properties __________

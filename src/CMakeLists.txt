@@ -5,6 +5,7 @@ set(SRCS module.cpp
          CollisionShape.cpp
          Conversions.cpp
          CompoundShape.cpp
+         GhostObject.cpp
          PhysicalComponent.cpp
          PrimitiveShape.cpp
          StaticTriMeshShape.cpp

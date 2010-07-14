@@ -6,8 +6,10 @@
 
 #include <Athena-Physics/World.h>
 #include <Athena-Physics/Body.h>
+#include <Athena-Physics/GhostObject.h>
 #include <Athena-Physics/Conversions.h>
 #include <Athena-Physics/CollisionManager.h>
+#include <BulletCollision/CollisionDispatch/btGhostObject.h>
 
 using namespace Athena;
 using namespace Athena::Physics;
@@ -115,6 +117,63 @@ unsigned int World::stepSimulation(Math::Real timeStep, unsigned int nbMaxSubSte
 
 //-----------------------------------------------------------------------
 
+void World::getContacts(PhysicalComponent* pComponent1, PhysicalComponent* pComponent2,
+                        tContactPointsList &contactPoints)
+{
+    assert(pComponent1);
+    assert(pComponent2);
+    
+    contactPoints.clear();
+
+    btCollisionObject* pObject1;
+    btCollisionObject* pObject2;
+    
+    if (Body::cast(pComponent1))
+        pObject1 = Body::cast(pComponent1)->getRigidBody();
+    else if (GhostObject::cast(pComponent1))
+        pObject1 = GhostObject::cast(pComponent1)->getGhostObject();
+    else
+        return;
+
+    if (Body::cast(pComponent2))
+        pObject2 = Body::cast(pComponent2)->getRigidBody();
+    else if (GhostObject::cast(pComponent2))
+        pObject2 = GhostObject::cast(pComponent2)->getGhostObject();
+    else
+        return;
+
+    btBroadphasePair* pPairs = m_pWorld->getPairCache()->getOverlappingPairArrayPtr();
+    unsigned int nbPairs = m_pWorld->getPairCache()->getNumOverlappingPairs();
+    btBroadphasePair* pPair = pPairs;
+    unsigned int i;
+    for (i = 0; i < nbPairs; ++i)
+    {
+        if (((pPair->m_pProxy0->m_clientObject == pObject1) && (pPair->m_pProxy1->m_clientObject == pObject2)) ||
+            ((pPair->m_pProxy0->m_clientObject == pObject2) && (pPair->m_pProxy1->m_clientObject == pObject1)))
+            break;
+        
+        ++pPair;
+    }
+    
+    if (i == nbPairs)
+        return;
+
+    if (!pPair->m_algorithm)
+        return;
+    
+    btManifoldArray manifolds;
+    pPair->m_algorithm->getAllContactManifolds(manifolds);
+
+	for (int j = 0; j < manifolds.size(); ++j)
+    {
+        btPersistentManifold* pManifold = manifolds[j];
+        for (int p = 0; p < pManifold->getNumContacts(); ++p)
+            contactPoints.push_back(pManifold->getContactPoint(p));
+    }
+}
+
+//-----------------------------------------------------------------------
+
 void World::createWorld()
 {
     assert(!m_pWorld);
@@ -127,6 +186,7 @@ void World::createWorld()
     dynamic_cast<btCollisionDispatcher*>(m_pDispatcher)->setNearCallback(&CollisionManager::customNearCallback);
 
 	m_pBroadphase = new btDbvtBroadphase();
+    m_pBroadphase->getOverlappingPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());
 
 	// The default constraint solver
 	m_pConstraintSolver = new btSequentialImpulseConstraintSolver();
@@ -167,6 +227,30 @@ void World::removeRigidBody(Body* pBody)
     assert(m_pWorld);
     
     m_pWorld->removeRigidBody(pBody->getRigidBody());
+}
+
+//-----------------------------------------------------------------------
+
+void World::addGhostObject(GhostObject* pGhostObject)
+{
+    // Assertions
+    assert(pGhostObject);
+    
+    if (!m_pWorld)
+        createWorld();
+
+    m_pWorld->addCollisionObject(pGhostObject->getGhostObject());
+}
+
+//-----------------------------------------------------------------------
+
+void World::removeGhostObject(GhostObject* pGhostObject)
+{
+    // Assertions
+    assert(pGhostObject);
+    assert(m_pWorld);
+    
+    m_pWorld->removeCollisionObject(pGhostObject->getGhostObject());
 }
 
 

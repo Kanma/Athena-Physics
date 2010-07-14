@@ -6,6 +6,7 @@
 
 #include <Athena-Physics/Prerequisites.h>
 #include <Athena-Physics/Body.h>
+#include <Athena-Physics/GhostObject.h>
 #include <Athena-Physics/CollisionShape.h>
 #include <Athena-Physics/CompoundShape.h>
 #include <Athena-Physics/PhysicalComponent.h>
@@ -28,6 +29,7 @@ void initialize()
     ComponentsManager* pComponentsManager = ComponentsManager::getSingletonPtr();
     
     pComponentsManager->registerType(Body::TYPE,                (ComponentCreationMethod*) &Body::create);
+    pComponentsManager->registerType(GhostObject::TYPE,         (ComponentCreationMethod*) &GhostObject::create);
     pComponentsManager->registerType(CollisionShape::TYPE,      (ComponentCreationMethod*) &CollisionShape::create);
     pComponentsManager->registerType(CompoundShape::TYPE,       (ComponentCreationMethod*) &CompoundShape::create);
     pComponentsManager->registerType(PhysicalComponent::TYPE,   (ComponentCreationMethod*) &PhysicalComponent::create);
