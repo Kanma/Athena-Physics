@@ -56,9 +56,9 @@ bool CollisionManager::needBroadphaseCollision(btBroadphaseProxy* pProxy1,
     tPairState state;
     
     if (group1 <= group2)
-        state = m_indexedPairs[group1][group2];
+        state = m_indexedPairs[1 << group1][1 << group2];
     else
-        state = m_indexedPairs[group2][group1];
+        state = m_indexedPairs[1 << group2][1 << group1];
 
     return (state != PAIR_DISABLED);
 }
@@ -72,9 +72,9 @@ void CollisionManager::enableCollision(tCollisionGroup group1, tCollisionGroup g
     tPairState* pState;
     
     if (group1 <= group2)
-        pState = &m_indexedPairs[group1][group2];
+        pState = &m_indexedPairs[1 << group1][1 << group2];
     else
-        pState = &m_indexedPairs[group2][group1];
+        pState = &m_indexedPairs[1 << group2][1 << group1];
     
     *pState = (bEnableFilter ? PAIR_ENABLED_WITH_FILTER : PAIR_ENABLED);
 }
@@ -102,9 +102,9 @@ void CollisionManager::customNearCallback(btBroadphasePair& collisionPair,
         tPairState state;
 
         if (group1 <= group2)
-            state = CollisionManager::_CurrentManager->m_indexedPairs[group1][group2];
+            state = CollisionManager::_CurrentManager->m_indexedPairs[1 << group1][1 << group2];
         else
-            state = CollisionManager::_CurrentManager->m_indexedPairs[group2][group1];
+            state = CollisionManager::_CurrentManager->m_indexedPairs[1 << group2][1 << group1];
 
         assert(state != PAIR_DISABLED);
 
