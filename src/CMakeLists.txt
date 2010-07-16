@@ -30,4 +30,8 @@ if (NOT ATHENA_PHYSICS_STATIC)
     )
 else()
     add_library(Athena-Physics STATIC ${SRCS} ${PLATFORM_SRCS})
+
+    if (NOT WIN32)
+        set_target_properties(Athena-Physics PROPERTIES COMPILE_FLAGS "-fPIC")
+    endif()
 endif()
