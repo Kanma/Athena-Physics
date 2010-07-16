@@ -158,11 +158,13 @@ public:
 	/// @param  pComponent1     The first component
 	/// @param  pComponent2     The second component
 	/// @retval contacts        An array of the contact points between the two components
+	/// @return                 'true' if the first component is the one called 'A' by
+	///                         the contact points
 	///
 	/// Usage example:
 	/// @code
 	/// World::tContactPointsList contacts;
-	/// pWorld->getContacts(pComponent1, pComponent2, contacts);
+	/// bool comp1IsA = pWorld->getContacts(pComponent1, pComponent2, contacts);
 	/// for (int j = 0; j < contacts.size(); ++j)
     /// {
     ///     const btManifoldPoint& pt = contacts[j];
@@ -174,7 +176,7 @@ public:
     ///	}
 	/// @endcode
 	//-----------------------------------------------------------------------------------
-    void getContacts(PhysicalComponent* pComponent1, PhysicalComponent* pComponent2,
+    bool getContacts(PhysicalComponent* pComponent1, PhysicalComponent* pComponent2,
                      tContactPointsList &contactPoints);
 
 protected:

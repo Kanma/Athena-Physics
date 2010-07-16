@@ -117,7 +117,7 @@ unsigned int World::stepSimulation(Math::Real timeStep, unsigned int nbMaxSubSte
 
 //-----------------------------------------------------------------------
 
-void World::getContacts(PhysicalComponent* pComponent1, PhysicalComponent* pComponent2,
+bool World::getContacts(PhysicalComponent* pComponent1, PhysicalComponent* pComponent2,
                         tContactPointsList &contactPoints)
 {
     assert(pComponent1);
@@ -133,14 +133,14 @@ void World::getContacts(PhysicalComponent* pComponent1, PhysicalComponent* pComp
     else if (GhostObject::cast(pComponent1))
         pObject1 = GhostObject::cast(pComponent1)->getGhostObject();
     else
-        return;
+        return false;
 
     if (Body::cast(pComponent2))
         pObject2 = Body::cast(pComponent2)->getRigidBody();
     else if (GhostObject::cast(pComponent2))
         pObject2 = GhostObject::cast(pComponent2)->getGhostObject();
     else
-        return;
+        return false;
 
     btBroadphasePair* pPairs = m_pWorld->getPairCache()->getOverlappingPairArrayPtr();
     unsigned int nbPairs = m_pWorld->getPairCache()->getNumOverlappingPairs();
@@ -156,10 +156,10 @@ void World::getContacts(PhysicalComponent* pComponent1, PhysicalComponent* pComp
     }
     
     if (i == nbPairs)
-        return;
+        return false;
 
     if (!pPair->m_algorithm)
-        return;
+        return false;
     
     btManifoldArray manifolds;
     pPair->m_algorithm->getAllContactManifolds(manifolds);
@@ -170,6 +170,8 @@ void World::getContacts(PhysicalComponent* pComponent1, PhysicalComponent* pComp
         for (int p = 0; p < pManifold->getNumContacts(); ++p)
             contactPoints.push_back(pManifold->getContactPoint(p));
     }
+    
+    return (pPair->m_pProxy0->m_clientObject == pObject1);
 }
 
 //-----------------------------------------------------------------------
