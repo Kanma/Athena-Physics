@@ -25,7 +25,7 @@ const std::string CollisionObject::TYPE = "Athena/Physics/CollisionObject";
 /***************************** CONSTRUCTION / DESTRUCTION ******************************/
 
 CollisionObject::CollisionObject(const std::string& strName, ComponentsList* pList)
-: PhysicalComponent(strName, pList), m_collisionGroup(-1)
+: PhysicalComponent(strName, pList), m_collisionGroup(255)
 {
 }
 
@@ -92,7 +92,7 @@ bool CollisionObject::setProperty(const std::string& strName, Utils::Variant* pV
 
 	// Group
 	if (strName == "collision-group")
-        setCollisionGroup(pValue->toUInt());
+        setCollisionGroup(pValue->toUChar());
 
 	// Destroy the value
 	delete pValue;

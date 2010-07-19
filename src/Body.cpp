@@ -204,7 +204,8 @@ void Body::onTransformsChanged()
 
 void Body::onCollisionShapeDestroyed(Utils::Variant* pValue)
 {
-    setCollisionShape(0);
+    m_pShape = 0;
+    updateBody();
 }
 
 

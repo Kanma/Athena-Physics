@@ -37,9 +37,9 @@ namespace Athena
         class StaticTriMeshShape;
 
     	//------------------------------------------------------------------------------------
-    	/// @brief	Represents a collision group (bitwise mask, 31 possible values)
+    	/// @brief	Represents a collision group (from 0 to 31)
     	//------------------------------------------------------------------------------------
-        typedef unsigned int tCollisionGroup;
+        typedef unsigned char tCollisionGroup;
 
     	//------------------------------------------------------------------------------------
     	/// @brief	Initialize the Physics module

@@ -142,6 +142,7 @@ void GhostObject::onTransformsChanged()
 
 void GhostObject::onShapeDestroyed(Utils::Variant* pValue)
 {
+    m_pShape = 0;
     setCollisionShape(0);
 }
 
