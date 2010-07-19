@@ -31,8 +31,7 @@ const std::string Body::TYPE = "Athena/Physics/Body";
 /***************************** CONSTRUCTION / DESTRUCTION ******************************/
 
 Body::Body(const std::string& strName, ComponentsList* pList)
-: PhysicalComponent(strName, pList), m_pBody(0), m_mass(0.0f), m_pShape(0),
-  m_collisionGroup(-1)
+: CollisionObject(strName, pList), m_pBody(0), m_mass(0.0f), m_pShape(0)
 {
     btRigidBody::btRigidBodyConstructionInfo info(0.0f, this, 0);
     m_pBody = new btRigidBody(info);
@@ -214,7 +213,7 @@ void Body::onCollisionShapeDestroyed(Utils::Variant* pValue)
 Utils::PropertiesList* Body::getProperties() const
 {
 	// Call the base class implementation
-	PropertiesList* pProperties = PhysicalComponent::getProperties();
+	PropertiesList* pProperties = CollisionObject::getProperties();
 
 	// Create the category belonging to this type
 	pProperties->selectCategory(TYPE, false);
@@ -250,7 +249,7 @@ bool Body::setProperty(const std::string& strCategory, const std::string& strNam
 	if (strCategory == TYPE)
 		return Body::setProperty(strName, pValue);
 
-	return PhysicalComponent::setProperty(strCategory, strName, pValue);
+	return CollisionObject::setProperty(strCategory, strName, pValue);
 }
 
 //-----------------------------------------------------------------------

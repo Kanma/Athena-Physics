@@ -2,6 +2,7 @@
 set(SRCS module.cpp
          Body.cpp
          CollisionManager.cpp
+         CollisionObject.cpp
          CollisionShape.cpp
          Conversions.cpp
          CompoundShape.cpp

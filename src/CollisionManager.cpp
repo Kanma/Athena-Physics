@@ -6,6 +6,7 @@
 
 #include <Athena-Physics/CollisionManager.h>
 #include <Athena-Physics/Body.h>
+#include <Athena-Physics/CollisionObject.h>
 #include <Athena-Physics/GhostObject.h>
 #include <Athena-Physics/Conversions.h>
 
@@ -90,8 +91,8 @@ void CollisionManager::customNearCallback(btBroadphasePair& collisionPair,
     {
         tCollisionGroup group1, group2;
         
-        PhysicalComponent* pComponent1 = getComponentOfCollisionObject((btCollisionObject*) collisionPair.m_pProxy0->m_clientObject, group1);
-        PhysicalComponent* pComponent2 = getComponentOfCollisionObject((btCollisionObject*) collisionPair.m_pProxy1->m_clientObject, group2);
+        CollisionObject* pComponent1 = getComponentOfCollisionObject((btCollisionObject*) collisionPair.m_pProxy0->m_clientObject, group1);
+        CollisionObject* pComponent2 = getComponentOfCollisionObject((btCollisionObject*) collisionPair.m_pProxy1->m_clientObject, group2);
 
         if ((group1 == -1) || (group2 == -1))
         {
@@ -120,38 +121,15 @@ void CollisionManager::customNearCallback(btBroadphasePair& collisionPair,
 
 tCollisionGroup CollisionManager::getGroupOfCollisionObject(btCollisionObject* pObject)
 {
-    btRigidBody* pRigidBody = btRigidBody::upcast(pObject);
-    if (pRigidBody)
-        return static_cast<Body*>(pRigidBody->getUserPointer())->getCollisionGroup();
-
-    btGhostObject* pGhostObject = btGhostObject::upcast(pObject);
-    if (pGhostObject)
-        return static_cast<GhostObject*>(pGhostObject->getUserPointer())->getCollisionGroup();
-
-    return -1;
+    return static_cast<CollisionObject*>(pObject->getUserPointer())->getCollisionGroup();
 }
 
 //-----------------------------------------------------------------------
 
-PhysicalComponent* CollisionManager::getComponentOfCollisionObject(btCollisionObject* pObject,
-                                                                   tCollisionGroup &group)
+CollisionObject* CollisionManager::getComponentOfCollisionObject(btCollisionObject* pObject,
+                                                                 tCollisionGroup &group)
 {
-    btRigidBody* pRigidBody = btRigidBody::upcast(pObject);
-    if (pRigidBody)
-    {
-        Body* pBody = static_cast<Body*>(pRigidBody->getUserPointer());
-        group = pBody->getCollisionGroup();
-        return pBody;
-    }
-
-    btGhostObject* pGhostObject = btGhostObject::upcast(pObject);
-    if (pGhostObject)
-    {
-        GhostObject* pGhost = static_cast<GhostObject*>(pGhostObject->getUserPointer());
-        group = pGhost->getCollisionGroup();
-        return pGhost;
-    }
-
-    group = -1;
-    return 0;
+    CollisionObject* pCollisionObject = static_cast<CollisionObject*>(pObject->getUserPointer());
+    group = pCollisionObject->getCollisionGroup();
+    return pCollisionObject;
 }

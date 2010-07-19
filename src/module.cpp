@@ -6,9 +6,10 @@
 
 #include <Athena-Physics/Prerequisites.h>
 #include <Athena-Physics/Body.h>
-#include <Athena-Physics/GhostObject.h>
+#include <Athena-Physics/CollisionObject.h>
 #include <Athena-Physics/CollisionShape.h>
 #include <Athena-Physics/CompoundShape.h>
+#include <Athena-Physics/GhostObject.h>
 #include <Athena-Physics/PhysicalComponent.h>
 #include <Athena-Physics/PrimitiveShape.h>
 #include <Athena-Physics/StaticTriMeshShape.h>
@@ -29,9 +30,10 @@ void initialize()
     ComponentsManager* pComponentsManager = ComponentsManager::getSingletonPtr();
     
     pComponentsManager->registerType(Body::TYPE,                (ComponentCreationMethod*) &Body::create);
-    pComponentsManager->registerType(GhostObject::TYPE,         (ComponentCreationMethod*) &GhostObject::create);
+    pComponentsManager->registerType(CollisionObject::TYPE,     (ComponentCreationMethod*) &CollisionObject::create);
     pComponentsManager->registerType(CollisionShape::TYPE,      (ComponentCreationMethod*) &CollisionShape::create);
     pComponentsManager->registerType(CompoundShape::TYPE,       (ComponentCreationMethod*) &CompoundShape::create);
+    pComponentsManager->registerType(GhostObject::TYPE,         (ComponentCreationMethod*) &GhostObject::create);
     pComponentsManager->registerType(PhysicalComponent::TYPE,   (ComponentCreationMethod*) &PhysicalComponent::create);
     pComponentsManager->registerType(PrimitiveShape::TYPE,      (ComponentCreationMethod*) &PrimitiveShape::create);
     pComponentsManager->registerType(StaticTriMeshShape::TYPE,  (ComponentCreationMethod*) &StaticTriMeshShape::create);

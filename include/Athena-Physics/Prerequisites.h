@@ -25,11 +25,12 @@ namespace Athena
     namespace Physics
     {
         class Body;
+        class CollisionManager;
+        class CollisionObject;
         class CollisionShape;
+        class GhostObject;
         class PhysicalComponent;
         class World;
-        class CollisionManager;
-        class GhostObject;
         
         class CompoundShape;
         class PrimitiveShape;

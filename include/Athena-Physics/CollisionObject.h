@@ -1,28 +1,24 @@
-/** @file	GhostObject.h
+/** @file	CollisionObject.h
 	@author	Philip Abbet
 
-	Declaration of the class 'Athena::Physics::GhostObject'
+	Declaration of the class 'Athena::Physics::CollisionObject'
 */
 
-#ifndef _ATHENA_PHYSICS_GHOSTOBJECT_H_
-#define _ATHENA_PHYSICS_GHOSTOBJECT_H_
+#ifndef _ATHENA_PHYSICS_COLLISIONOBJECT_H_
+#define _ATHENA_PHYSICS_COLLISIONOBJECT_H_
 
 #include <Athena-Physics/Prerequisites.h>
-#include <Athena-Physics/CollisionObject.h>
+#include <Athena-Physics/PhysicalComponent.h>
 #include <Athena-Physics/Conversions.h>
-#include <BulletCollision/CollisionDispatch/btGhostObject.h>
 
 namespace Athena {
 namespace Physics {
 
 
 //---------------------------------------------------------------------------------------
-/// @brief	A ghost object can be used to retrieve a list of all the collisions that
-///         happened with its shape during the last simulation step
-///
-/// The ghost object doesn't have any influence on the simulation
+/// @brief	Base class for all the physical components that can collide with others
 //---------------------------------------------------------------------------------------
-class ATHENA_SYMBOL GhostObject: public CollisionObject
+class ATHENA_SYMBOL CollisionObject: public PhysicalComponent
 {
 	//_____ Construction / Destruction __________
 public:
@@ -30,12 +26,12 @@ public:
     /// @brief	Constructor
     /// @param	strName		Name of the component
     //-----------------------------------------------------------------------------------
-	GhostObject(const std::string& strName, Entities::ComponentsList* pList);
+	CollisionObject(const std::string& strName, Entities::ComponentsList* pList);
 
     //-----------------------------------------------------------------------------------
     /// @brief	Destructor
     //-----------------------------------------------------------------------------------
-	virtual ~GhostObject();
+	virtual ~CollisionObject();
 
     //-----------------------------------------------------------------------------------
     /// @brief	Create a new component (Component creation method)
@@ -44,15 +40,15 @@ public:
     /// @param	pList	List to which the component must be added
     /// @return			The new component
     //-----------------------------------------------------------------------------------
-	static GhostObject* create(const std::string& strName, Entities::ComponentsList* pList);
+	static CollisionObject* create(const std::string& strName, Entities::ComponentsList* pList);
 
     //-----------------------------------------------------------------------------------
-    /// @brief	Cast a component to a GhostObject
+    /// @brief	Cast a component to a CollisionObject
     ///
     /// @param	pComponent	The component
-    /// @return				The component, 0 if it isn't castable to a GhostObject
+    /// @return				The component, 0 if it isn't castable to a CollisionObject
     //-----------------------------------------------------------------------------------
-	static GhostObject* cast(Entities::Component* pComponent);
+	static CollisionObject* cast(Entities::Component* pComponent);
 
 
 	//_____ Implementation of Component __________
@@ -67,54 +63,20 @@ public:
 	//_____ Methods __________
 public:
 	//-----------------------------------------------------------------------------------
-	/// @brief	Set the shape
+	/// @brief	Set the 'collision group' of the ghost object
 	//-----------------------------------------------------------------------------------
-    void setCollisionShape(CollisionShape* pShape);
-
-	//-----------------------------------------------------------------------------------
-	/// @brief	Retrieve the shape
-	//-----------------------------------------------------------------------------------
-    inline CollisionShape* getCollisionShape() const
+    inline void setCollisionGroup(tCollisionGroup group)
     {
-        return m_pShape;
+        m_collisionGroup = group;
     }
 
 	//-----------------------------------------------------------------------------------
-	/// @brief	Returns the number of objects that are overlapping with the shape of
-	///         the ghost object
+	/// @brief	Returns the 'collision group' of the ghost object
 	//-----------------------------------------------------------------------------------
-    inline unsigned int getNbOverlappingObjects() const
+    inline tCollisionGroup getCollisionGroup() const
     {
-        return (unsigned) m_pGhostObject->getNumOverlappingObjects();
+        return m_collisionGroup;
     }
-    
-	//-----------------------------------------------------------------------------------
-	/// @brief	Returns one of the objects that are overlapping with the shape of the
-	///         ghost object
-	//-----------------------------------------------------------------------------------
-    PhysicalComponent* getOverlappingObject(unsigned int index);
-
-	//-----------------------------------------------------------------------------------
-	/// @brief	Returns the Bullet's ghost object
-	//-----------------------------------------------------------------------------------
-    inline btGhostObject* getGhostObject() const
-    {
-        return m_pGhostObject;
-    }
-
-protected:
-	//-----------------------------------------------------------------------------------
-	/// @brief	Called when the transforms affecting this component have changed
-	///
-	/// Can be called when the component isn't affected by any transforms anymore
-	/// (getTransforms() returns 0).
-	//-----------------------------------------------------------------------------------
-	virtual void onTransformsChanged();
-
-
-	//_____ Slots __________
-protected:
-	void onShapeDestroyed(Utils::Variant* pValue);
 
 
 	//_____ Management of the properties __________
@@ -166,8 +128,7 @@ public:
 
     //_____ Attributes __________
 protected:
-    btGhostObject*  m_pGhostObject;     ///< The ghost object
-    CollisionShape* m_pShape;           ///< The shape
+    tCollisionGroup m_collisionGroup;   ///< The collision group
 };
 
 }

@@ -8,7 +8,7 @@
 #define _ATHENA_PHYSICS_BODY_H_
 
 #include <Athena-Physics/Prerequisites.h>
-#include <Athena-Physics/PhysicalComponent.h>
+#include <Athena-Physics/CollisionObject.h>
 #include <Athena-Physics/Conversions.h>
 
 namespace Athena {
@@ -46,7 +46,7 @@ namespace Physics {
 /// processing time, except a minor broadphase collision detection impact (to allow
 /// active objects to activate/wake up sleeping objects).
 //---------------------------------------------------------------------------------------
-class ATHENA_SYMBOL Body: public PhysicalComponent, public btMotionState
+class ATHENA_SYMBOL Body: public CollisionObject, public btMotionState
 {
 	//_____ Construction / Destruction __________
 public:
@@ -253,22 +253,6 @@ public:
         return m_pBody;
     }
 
-	//-----------------------------------------------------------------------------------
-	/// @brief	Set the 'collision group' of the rigid body
-	//-----------------------------------------------------------------------------------
-    inline void setCollisionGroup(tCollisionGroup group)
-    {
-        m_collisionGroup = group;
-    }
-
-	//-----------------------------------------------------------------------------------
-	/// @brief	Returns the 'collision group' of the rigid body
-	//-----------------------------------------------------------------------------------
-    inline tCollisionGroup getCollisionGroup() const
-    {
-        return m_collisionGroup;
-    }
-
 protected:
     void updateBody();
 
@@ -338,7 +322,6 @@ protected:
     btRigidBody*    m_pBody;            ///< The body
     Math::Real      m_mass;             ///< The mass of the body
     CollisionShape* m_pShape;           ///< The collision shape
-    tCollisionGroup m_collisionGroup;   ///< The collision group
 };
 
 }

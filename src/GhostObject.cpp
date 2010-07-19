@@ -31,7 +31,7 @@ const std::string GhostObject::TYPE = "Athena/Physics/GhostObject";
 /***************************** CONSTRUCTION / DESTRUCTION ******************************/
 
 GhostObject::GhostObject(const std::string& strName, ComponentsList* pList)
-: PhysicalComponent(strName, pList), m_pGhostObject(0), m_pShape(0), m_collisionGroup(-1)
+: CollisionObject(strName, pList), m_pGhostObject(0), m_pShape(0)
 {
     m_pGhostObject = new btGhostObject();
     m_pGhostObject->setCollisionFlags(m_pGhostObject->getCollisionFlags() | btCollisionObject::CF_NO_CONTACT_RESPONSE);
@@ -151,7 +151,7 @@ void GhostObject::onShapeDestroyed(Utils::Variant* pValue)
 Utils::PropertiesList* GhostObject::getProperties() const
 {
 	// Call the base class implementation
-	PropertiesList* pProperties = PhysicalComponent::getProperties();
+	PropertiesList* pProperties = CollisionObject::getProperties();
 
 	// Create the category belonging to this type
 	pProperties->selectCategory(TYPE, false);
@@ -176,7 +176,7 @@ bool GhostObject::setProperty(const std::string& strCategory, const std::string&
 	if (strCategory == TYPE)
 		return GhostObject::setProperty(strName, pValue);
 
-	return PhysicalComponent::setProperty(strCategory, strName, pValue);
+	return CollisionObject::setProperty(strCategory, strName, pValue);
 }
 
 //-----------------------------------------------------------------------

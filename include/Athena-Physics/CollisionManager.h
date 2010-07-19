@@ -21,8 +21,8 @@ namespace Physics {
 /// @brief	The object in charge of allowing or not the collisions between the different
 ///         'collision groups'
 ///
-/// Each body is assigned to a 'collision group'. If the application don't do it, a
-/// default collision group is used, that will collide with everything.
+/// Each collision object is assigned to a 'collision group'. If the application don't
+/// do it, a default collision group is used, that will collide with everything.
 ///
 /// The Collision Manager provides a signal for each enabled collision pair, fired when
 /// a collision occurs.
@@ -61,16 +61,12 @@ public:
     	//-------------------------------------------------------------------------------
     	/// @brief	Called for each collision pair during the narrowphase
     	///
-    	/// @param  pComponent1     First physical component of the collision pair
-    	/// @param  pComponent2     Second physical component of the collision pair
+    	/// @param  pComponent1     First collision object of the collision pair
+    	/// @param  pComponent2     Second collision object of the collision pair
     	/// @return                 'true' if a collision must happen
-    	///
-    	/// At the moment, the physical components can be either:
-    	///   - a rigid body (Body)
-    	///   - a ghost object (GhostObject)
     	//-------------------------------------------------------------------------------
-        virtual bool needsCollision(PhysicalComponent* pComponent1,
-                                    PhysicalComponent* pComponent2) = 0;
+        virtual bool needsCollision(CollisionObject* pComponent1,
+                                    CollisionObject* pComponent2) = 0;
     };
 
 
@@ -146,7 +142,7 @@ public:
 
 private:
     static tCollisionGroup getGroupOfCollisionObject(btCollisionObject* pObject);
-    static PhysicalComponent* getComponentOfCollisionObject(btCollisionObject* pObject, tCollisionGroup &group);
+    static CollisionObject* getComponentOfCollisionObject(btCollisionObject* pObject, tCollisionGroup &group);
 
 
 	//_____ Constants __________
