@@ -31,7 +31,8 @@ const std::string Body::TYPE = "Athena/Physics/Body";
 /***************************** CONSTRUCTION / DESTRUCTION ******************************/
 
 Body::Body(const std::string& strName, ComponentsList* pList)
-: CollisionObject(strName, pList), m_pBody(0), m_mass(0.0f), m_pShape(0)
+: CollisionObject(strName, pList), m_pBody(0), m_mass(0.0f), m_pShape(0),
+  m_bRotationEnabled(true)
 {
     btRigidBody::btRigidBodyConstructionInfo info(0.0f, this, 0);
     m_pBody = new btRigidBody(info);
@@ -86,7 +87,9 @@ void Body::setWorldTransform(const btTransform& worldTrans)
     if (pTransforms)
     {
         pTransforms->translate(fromBullet(worldTrans.getOrigin()) - pTransforms->getWorldPosition(), Transforms::TS_WORLD);
-        pTransforms->rotate(pTransforms->getWorldOrientation().rotationTo(fromBullet(worldTrans.getRotation())), Transforms::TS_WORLD);
+
+        if (m_bRotationEnabled)
+            pTransforms->rotate(pTransforms->getWorldOrientation().rotationTo(fromBullet(worldTrans.getRotation())), Transforms::TS_WORLD);
     }
 }
 

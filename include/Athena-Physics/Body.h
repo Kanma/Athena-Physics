@@ -10,6 +10,7 @@
 #include <Athena-Physics/Prerequisites.h>
 #include <Athena-Physics/CollisionObject.h>
 #include <Athena-Physics/Conversions.h>
+#include <Athena-Entities/Transforms.h>
 
 namespace Athena {
 namespace Physics {
@@ -181,11 +182,36 @@ public:
 	{
         m_pBody->setActivationState(bEnabled ? WANTS_DEACTIVATION : DISABLE_SIMULATION);
 	}
+	
+	//-----------------------------------------------------------------------------------
+	/// @brief	Enable/Disable the rotation of the body, due to physical events
+    ///
+    /// Enabled by default
+	//-----------------------------------------------------------------------------------
+	inline void enableRotation(bool bEnabled)
+	{
+        m_bRotationEnabled = bEnabled;
+        setAngularFactor( bEnabled ? 1.0f : 0.0f );
+	}
+
+	//-----------------------------------------------------------------------------------
+	/// @brief	Sets the linear velocity of the body
+	///
+	/// The linear velocity takes into account the current orientation of the body
+	//-----------------------------------------------------------------------------------
+    inline void setLinearVelocity(const Math::Vector3& velocity)
+	{
+        Entities::Transforms* pTransforms = getTransforms();
+        if (pTransforms)
+            m_pBody->setLinearVelocity(toBullet(pTransforms->getWorldOrientation() * velocity));
+        else
+            m_pBody->setLinearVelocity(toBullet(velocity));
+	}
 
 	//-----------------------------------------------------------------------------------
 	/// @brief	Sets the linear velocity of the body
 	//-----------------------------------------------------------------------------------
-    inline void setLinearVelocity(const Math::Vector3& velocity)
+    inline void setWorldLinearVelocity(const Math::Vector3& velocity)
 	{
         m_pBody->setLinearVelocity(toBullet(velocity));
 	}
@@ -322,6 +348,7 @@ protected:
     btRigidBody*    m_pBody;            ///< The body
     Math::Real      m_mass;             ///< The mass of the body
     CollisionShape* m_pShape;           ///< The collision shape
+    bool            m_bRotationEnabled; ///< Indicates if the rotations are enabled
 };
 
 }
