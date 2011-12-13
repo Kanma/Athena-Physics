@@ -31,11 +31,6 @@ public:
 	PhysicalComponent(const std::string& strName, Entities::ComponentsList* pList);
 
     //-----------------------------------------------------------------------------------
-    /// @brief	Destructor
-    //-----------------------------------------------------------------------------------
-	virtual ~PhysicalComponent();
-
-    //-----------------------------------------------------------------------------------
     /// @brief	Create a new component (Component creation method)
     ///
     /// @param	strName	Name of the component
@@ -51,6 +46,12 @@ public:
     /// @return				The component, 0 if it isn't castable to a PhysicalComponent
     //-----------------------------------------------------------------------------------
 	static PhysicalComponent* cast(Entities::Component* pComponent);
+
+protected:
+    //-----------------------------------------------------------------------------------
+    /// @brief	Destructor
+    //-----------------------------------------------------------------------------------
+	virtual ~PhysicalComponent();
 
 
 	//_____ Implementation of Component __________

@@ -58,11 +58,6 @@ public:
 	Body(const std::string& strName, Entities::ComponentsList* pList);
 
     //-----------------------------------------------------------------------------------
-    /// @brief	Destructor
-    //-----------------------------------------------------------------------------------
-	virtual ~Body();
-
-    //-----------------------------------------------------------------------------------
     /// @brief	Create a new component (Component creation method)
     ///
     /// @param	strName	Name of the component
@@ -78,6 +73,12 @@ public:
     /// @return				The component, 0 if it isn't castable to a Body
     //-----------------------------------------------------------------------------------
 	static Body* cast(Entities::Component* pComponent);
+
+protected:
+    //-----------------------------------------------------------------------------------
+    /// @brief	Destructor
+    //-----------------------------------------------------------------------------------
+	virtual ~Body();
 
 
 	//_____ Implementation of Component __________
@@ -279,21 +280,30 @@ public:
         return m_pBody;
     }
 
-protected:
-    void updateBody();
-
 	//-----------------------------------------------------------------------------------
 	/// @brief	Called when the transforms affecting this component have changed
 	///
 	/// Can be called when the component isn't affected by any transforms anymore
 	/// (getTransforms() returns 0).
+	///
+	/// @remark	If you override it in your component, don't forget to call the base class
+	///			implementation!
 	//-----------------------------------------------------------------------------------
 	virtual void onTransformsChanged();
 
-
-	//_____ Slots __________
 protected:
-	void onCollisionShapeDestroyed(Utils::Variant* pValue);
+    void updateBody();
+
+
+    //_____ Links management __________
+protected:
+	//-----------------------------------------------------------------------------------
+	/// @brief	Called when a component this one is linked to must be unlinked
+	///
+	/// @remark	If you override it in your component, don't forget to call the base class
+	///			implementation!
+	//-----------------------------------------------------------------------------------
+	virtual void mustUnlinkComponent(Component* pComponent);
 
 
 	//_____ Management of the properties __________

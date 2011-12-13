@@ -33,11 +33,6 @@ public:
 	GhostObject(const std::string& strName, Entities::ComponentsList* pList);
 
     //-----------------------------------------------------------------------------------
-    /// @brief	Destructor
-    //-----------------------------------------------------------------------------------
-	virtual ~GhostObject();
-
-    //-----------------------------------------------------------------------------------
     /// @brief	Create a new component (Component creation method)
     ///
     /// @param	strName	Name of the component
@@ -53,6 +48,12 @@ public:
     /// @return				The component, 0 if it isn't castable to a GhostObject
     //-----------------------------------------------------------------------------------
 	static GhostObject* cast(Entities::Component* pComponent);
+
+protected:
+    //-----------------------------------------------------------------------------------
+    /// @brief	Destructor
+    //-----------------------------------------------------------------------------------
+	virtual ~GhostObject();
 
 
 	//_____ Implementation of Component __________
@@ -102,7 +103,6 @@ public:
         return m_pGhostObject;
     }
 
-protected:
 	//-----------------------------------------------------------------------------------
 	/// @brief	Called when the transforms affecting this component have changed
 	///
@@ -112,9 +112,15 @@ protected:
 	virtual void onTransformsChanged();
 
 
-	//_____ Slots __________
+    //_____ Links management __________
 protected:
-	void onShapeDestroyed(Utils::Variant* pValue);
+	//-----------------------------------------------------------------------------------
+	/// @brief	Called when a component this one is linked to must be unlinked
+	///
+	/// @remark	If you override it in your component, don't forget to call the base class
+	///			implementation!
+	//-----------------------------------------------------------------------------------
+	virtual void mustUnlinkComponent(Component* pComponent);
 
 
 	//_____ Management of the properties __________

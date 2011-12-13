@@ -55,11 +55,6 @@ public:
 	PrimitiveShape(const std::string& strName, Entities::ComponentsList* pList);
 
     //-----------------------------------------------------------------------------------
-    /// @brief	Destructor
-    //-----------------------------------------------------------------------------------
-	virtual ~PrimitiveShape();
-
-    //-----------------------------------------------------------------------------------
     /// @brief	Create a new component (Component creation method)
     ///
     /// @param	strName	Name of the component
@@ -75,6 +70,12 @@ public:
     /// @return				The component, 0 if it isn't castable to a PrimitiveShape
     //-----------------------------------------------------------------------------------
 	static PrimitiveShape* cast(Entities::Component* pComponent);
+
+protected:
+    //-----------------------------------------------------------------------------------
+    /// @brief	Destructor
+    //-----------------------------------------------------------------------------------
+	virtual ~PrimitiveShape();
 
 
 	//_____ Implementation of Component __________

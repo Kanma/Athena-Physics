@@ -33,11 +33,6 @@ public:
 	CompoundShape(const std::string& strName, Entities::ComponentsList* pList);
 
     //-----------------------------------------------------------------------------------
-    /// @brief	Destructor
-    //-----------------------------------------------------------------------------------
-	virtual ~CompoundShape();
-
-    //-----------------------------------------------------------------------------------
     /// @brief	Create a new component (Component creation method)
     ///
     /// @param	strName	Name of the component
@@ -53,6 +48,12 @@ public:
     /// @return				The component, 0 if it isn't castable to a CompoundShape
     //-----------------------------------------------------------------------------------
 	static CompoundShape* cast(Entities::Component* pComponent);
+
+protected:
+    //-----------------------------------------------------------------------------------
+    /// @brief	Destructor
+    //-----------------------------------------------------------------------------------
+	virtual ~CompoundShape();
 
 
 	//_____ Implementation of Component __________

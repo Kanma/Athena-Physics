@@ -54,11 +54,6 @@ public:
 	World(Entities::ComponentsList* pList);
 
     //-----------------------------------------------------------------------------------
-    /// @brief	Destructor
-    //-----------------------------------------------------------------------------------
-	virtual ~World();
-
-    //-----------------------------------------------------------------------------------
     /// @brief	Create a new component (Component creation method)
     ///
     /// @param	strName	Name of the component (not used, kept for compatibility)
@@ -74,6 +69,12 @@ public:
     /// @return				The component, 0 if it isn't castable to a World
     //-----------------------------------------------------------------------------------
 	static World* cast(Entities::Component* pComponent);
+
+protected:
+    //-----------------------------------------------------------------------------------
+    /// @brief	Destructor
+    //-----------------------------------------------------------------------------------
+	virtual ~World();
 
 
 	//_____ Implementation of Component __________

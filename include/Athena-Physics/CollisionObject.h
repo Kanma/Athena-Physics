@@ -29,11 +29,6 @@ public:
 	CollisionObject(const std::string& strName, Entities::ComponentsList* pList);
 
     //-----------------------------------------------------------------------------------
-    /// @brief	Destructor
-    //-----------------------------------------------------------------------------------
-	virtual ~CollisionObject();
-
-    //-----------------------------------------------------------------------------------
     /// @brief	Create a new component (Component creation method)
     ///
     /// @param	strName	Name of the component
@@ -49,6 +44,12 @@ public:
     /// @return				The component, 0 if it isn't castable to a CollisionObject
     //-----------------------------------------------------------------------------------
 	static CollisionObject* cast(Entities::Component* pComponent);
+
+protected:
+    //-----------------------------------------------------------------------------------
+    /// @brief	Destructor
+    //-----------------------------------------------------------------------------------
+	virtual ~CollisionObject();
 
 
 	//_____ Implementation of Component __________

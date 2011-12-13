@@ -50,11 +50,6 @@ public:
 	StaticTriMeshShape(const std::string& strName, Entities::ComponentsList* pList);
 
     //-----------------------------------------------------------------------------------
-    /// @brief	Destructor
-    //-----------------------------------------------------------------------------------
-	virtual ~StaticTriMeshShape();
-
-    //-----------------------------------------------------------------------------------
     /// @brief	Create a new component (Component creation method)
     ///
     /// @param	strName	Name of the component
@@ -70,6 +65,12 @@ public:
     /// @return				The component, 0 if it isn't castable to a StaticTriMeshShape
     //-----------------------------------------------------------------------------------
 	static StaticTriMeshShape* cast(Entities::Component* pComponent);
+
+protected:
+    //-----------------------------------------------------------------------------------
+    /// @brief	Destructor
+    //-----------------------------------------------------------------------------------
+	virtual ~StaticTriMeshShape();
 
 
 	//_____ Implementation of Component __________

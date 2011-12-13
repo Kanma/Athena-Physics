@@ -74,28 +74,24 @@ void GhostObject::setCollisionShape(CollisionShape* pShape)
     
     if (pShape == m_pShape)
         return;
+
+    if (m_pGhostObject->getCollisionShape())
+        getWorld()->removeGhostObject(this);
         
-	// Unregister to the signals of the previous shape
-	if (m_pShape)
-	{
-		SignalsList* pSignals = m_pShape->getSignalsList();
-		pSignals->disconnect(SIGNAL_COMPONENT_DESTROYED, this, &GhostObject::onShapeDestroyed);
+    // Unlink from the current shape
+    if (m_pShape)
+    {
+        removeLinkTo(m_pShape);
+        m_pShape = 0;
     }
     
     m_pShape = pShape;
     
-    // Register to the signals of the new shape
-	if (m_pShape)
-	{
-		SignalsList* pSignals = m_pShape->getSignalsList();
-		pSignals->connect(SIGNAL_COMPONENT_DESTROYED, this, &GhostObject::onShapeDestroyed);
-	}
-
-    if (m_pGhostObject->getCollisionShape())
-        getWorld()->removeGhostObject(this);
-
     if (m_pShape)
     {
+        // Link with the new shape
+        addLinkTo(m_pShape);
+
         m_pGhostObject->setCollisionShape(m_pShape->getCollisionShape());
         getWorld()->addGhostObject(this);
     }
@@ -138,12 +134,25 @@ void GhostObject::onTransformsChanged()
 }
 
 
-/**************************************** SLOTS ****************************************/
+/*********************************** LINKS MANAGEMENT **********************************/
 
-void GhostObject::onShapeDestroyed(Utils::Variant* pValue)
+void GhostObject::mustUnlinkComponent(Component* pComponent)
 {
-    m_pShape = 0;
-    setCollisionShape(0);
+    // Assertions
+    assert(pComponent);
+
+    bool bMustUpdate = false;
+
+    if (m_pShape == pComponent)
+    {
+        m_pShape = 0;
+        bMustUpdate = true;
+    }
+
+    CollisionObject::mustUnlinkComponent(pComponent);
+
+    if (bMustUpdate)
+        setCollisionShape(0);
 }
 
 

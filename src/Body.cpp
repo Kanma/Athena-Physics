@@ -46,8 +46,7 @@ Body::Body(const std::string& strName, ComponentsList* pList)
 
 Body::~Body()
 {
-    if (m_pShape)
-        getWorld()->removeRigidBody(this);
+    assert(!m_pShape);
 
     delete m_pBody;
 }
@@ -139,27 +138,31 @@ void Body::setCollisionShape(CollisionShape* pShape)
     if (pShape == m_pShape)
         return;
         
-	// Unregister to the signals of the previous shape
-	if (m_pShape)
-	{
-		SignalsList* pSignals = m_pShape->getSignalsList();
-		pSignals->disconnect(SIGNAL_COMPONENT_DESTROYED, this, &Body::onCollisionShapeDestroyed);
-        
-        m_pShape->setBody(0);
+    // Unlink from the current shape
+    if (m_pShape)
+    {
+        removeLinkTo(m_pShape);
+        m_pShape = 0;
     }
     
     m_pShape = pShape;
     
-    // Register to the signals of the new shape
+    // Link with the new shape
 	if (m_pShape)
-	{
-		SignalsList* pSignals = m_pShape->getSignalsList();
-		pSignals->connect(SIGNAL_COMPONENT_DESTROYED, this, &Body::onCollisionShapeDestroyed);
-
-        m_pShape->setBody(this);
-	}
+        addLinkTo(m_pShape);
 
     updateBody();
+}
+
+//-----------------------------------------------------------------------
+
+void Body::onTransformsChanged()
+{
+    PhysicalComponent::onTransformsChanged();
+
+    // If we don't do that, the position of the body isn't changed
+    if (isStatic())
+        m_pBody->setMotionState(m_pBody->getMotionState());
 }
 
 //-----------------------------------------------------------------------
@@ -191,24 +194,26 @@ void Body::updateBody()
         getWorld()->addRigidBody(this);
 }
 
-//-----------------------------------------------------------------------
 
-void Body::onTransformsChanged()
+/*********************************** LINKS MANAGEMENT **********************************/
+
+void Body::mustUnlinkComponent(Component* pComponent)
 {
-    PhysicalComponent::onTransformsChanged();
+    // Assertions
+    assert(pComponent);
 
-    // If we don't do that, the position of the body isn't changed
-    if (isStatic())
-        m_pBody->setMotionState(m_pBody->getMotionState());
-}
+    bool bMustUpdate = false;
 
+    if (m_pShape == pComponent)
+    {
+        m_pShape = 0;
+        bMustUpdate = true;
+    }
 
-/**************************************** SLOTS ****************************************/
+    CollisionObject::mustUnlinkComponent(pComponent);
 
-void Body::onCollisionShapeDestroyed(Utils::Variant* pValue)
-{
-    m_pShape = 0;
-    updateBody();
+    if (bMustUpdate)
+        updateBody();
 }
 
 

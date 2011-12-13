@@ -34,11 +34,6 @@ public:
 	CollisionShape(const std::string& strName, Entities::ComponentsList* pList);
 
     //-----------------------------------------------------------------------------------
-    /// @brief	Destructor
-    //-----------------------------------------------------------------------------------
-	virtual ~CollisionShape();
-
-    //-----------------------------------------------------------------------------------
     /// @brief	Create a new component (Component creation method)
     ///
     /// @param	strName	Name of the component
@@ -54,6 +49,12 @@ public:
     /// @return				The component, 0 if it isn't castable to a CollisionShape
     //-----------------------------------------------------------------------------------
 	static CollisionShape* cast(Entities::Component* pComponent);
+
+protected:
+    //-----------------------------------------------------------------------------------
+    /// @brief	Destructor
+    //-----------------------------------------------------------------------------------
+	virtual ~CollisionShape();
 
 
 	//_____ Implementation of Component __________
@@ -75,13 +76,12 @@ public:
         return m_pCollisionShape;
     }
 
-
 protected:
-    void setBody(Body* pBody)
+    inline void setBody(Body* pBody)
     {
         m_pBody = pBody;
     }
-    
+
 
 	//_____ Management of the properties __________
 public:
