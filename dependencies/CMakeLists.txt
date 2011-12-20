@@ -1,10 +1,10 @@
 # Subdirectories to process
-add_subdirectory(UnitTest++)
-add_subdirectory(Athena-Math)
-add_subdirectory(Athena-Core)
-add_subdirectory(Athena-Entities)
-add_subdirectory(bullet)
+xmake_add_subdirectory(UnitTest++)
+xmake_add_subdirectory(Athena-Math)
+xmake_add_subdirectory(Athena-Core)
+xmake_add_subdirectory(Athena-Entities)
+xmake_add_subdirectory(Bullet)
 
-if (ATHENA_PHYSICS_GRAPHICS_SUPPORT AND EXISTS "ogre/CMakeLists.txt")
-    add_subdirectory(ogre)
+if (ATHENA_PHYSICS_GRAPHICS_SUPPORT AND EXISTS "Ogre/CMakeLists.txt")
+    xmake_add_subdirectory(Ogre)
 endif()

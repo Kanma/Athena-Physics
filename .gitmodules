@@ -1,9 +1,9 @@
-[submodule "dependencies/xmake"]
-	path = dependencies/xmake
+[submodule "dependencies/XMake"]
+	path = dependencies/XMake
 	url = git://github.com/Kanma/XMake.git
-[submodule "dependencies/bullet"]
-	path = dependencies/bullet
-	url = git://github.com/Kanma/Athena-Dependencies-Bullet.git
+[submodule "dependencies/Bullet"]
+	path = dependencies/Bullet
+	url = git://github.com/Kanma/Bullet.git
 [submodule "dependencies/Athena-Math"]
 	path = dependencies/Athena-Math
 	url = git://github.com/Kanma/Athena-Math.git
@@ -15,4 +15,4 @@
 	url = git://github.com/Kanma/Athena-Entities.git
 [submodule "dependencies/UnitTest++"]
 	path = dependencies/UnitTest++
-	url = git://github.com/Kanma/Athena-Dependencies-UnitTest-cpp.git
+	url = git://github.com/Kanma/UnitTest-cpp.git
