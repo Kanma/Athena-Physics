@@ -22,7 +22,7 @@ namespace Physics {
 /// scene itself (not of an entity). Additionally, the name of the world component will
 /// always be equal to World::DEFAULT_NAME.
 //---------------------------------------------------------------------------------------
-class ATHENA_SYMBOL World: public PhysicalComponent
+class ATHENA_PHYSICS_SYMBOL World: public PhysicalComponent
 {
     friend class Body;
     friend class GhostObject;

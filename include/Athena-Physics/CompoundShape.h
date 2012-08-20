@@ -22,7 +22,7 @@ namespace Physics {
 ///
 /// The actual shape and its dimensions can be parametrized
 //---------------------------------------------------------------------------------------
-class ATHENA_SYMBOL CompoundShape: public CollisionShape
+class ATHENA_PHYSICS_SYMBOL CompoundShape: public CollisionShape
 {
 	//_____ Construction / Destruction __________
 public:

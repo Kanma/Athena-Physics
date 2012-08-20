@@ -20,7 +20,7 @@ namespace Physics {
 /// Collision shapes are used to specify the shape of a body in the physical simulation.
 /// See Body for a detailed explanation.
 //---------------------------------------------------------------------------------------
-class ATHENA_SYMBOL CollisionShape: public PhysicalComponent
+class ATHENA_PHYSICS_SYMBOL CollisionShape: public PhysicalComponent
 {
     friend class Body;
 

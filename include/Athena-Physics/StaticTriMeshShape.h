@@ -23,7 +23,7 @@ namespace Physics {
 ///   - if support for Athena-Graphics is enabled: as one Ogre mesh or one Visual Object
 ///     component
 //---------------------------------------------------------------------------------------
-class ATHENA_SYMBOL StaticTriMeshShape: public CollisionShape
+class ATHENA_PHYSICS_SYMBOL StaticTriMeshShape: public CollisionShape
 {
     //_____ Internal types ___________
 public:

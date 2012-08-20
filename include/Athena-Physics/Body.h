@@ -47,7 +47,7 @@ namespace Physics {
 /// processing time, except a minor broadphase collision detection impact (to allow
 /// active objects to activate/wake up sleeping objects).
 //---------------------------------------------------------------------------------------
-class ATHENA_SYMBOL Body: public CollisionObject, public btMotionState
+class ATHENA_PHYSICS_SYMBOL Body: public CollisionObject, public btMotionState
 {
 	//_____ Construction / Destruction __________
 public:

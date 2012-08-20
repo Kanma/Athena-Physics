@@ -22,7 +22,7 @@ namespace Physics {
 ///
 /// The ghost object doesn't have any influence on the simulation
 //---------------------------------------------------------------------------------------
-class ATHENA_SYMBOL GhostObject: public CollisionObject
+class ATHENA_PHYSICS_SYMBOL GhostObject: public CollisionObject
 {
 	//_____ Construction / Destruction __________
 public:

@@ -20,7 +20,7 @@ namespace Physics {
 //---------------------------------------------------------------------------------------
 /// @brief	Base class for all the physical components of an entity
 //---------------------------------------------------------------------------------------
-class ATHENA_SYMBOL PhysicalComponent: public Entities::Component
+class ATHENA_PHYSICS_SYMBOL PhysicalComponent: public Entities::Component
 {
 	//_____ Construction / Destruction __________
 public:

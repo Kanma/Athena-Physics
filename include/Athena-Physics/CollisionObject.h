@@ -18,7 +18,7 @@ namespace Physics {
 //---------------------------------------------------------------------------------------
 /// @brief	Base class for all the physical components that can collide with others
 //---------------------------------------------------------------------------------------
-class ATHENA_SYMBOL CollisionObject: public PhysicalComponent
+class ATHENA_PHYSICS_SYMBOL CollisionObject: public PhysicalComponent
 {
 	//_____ Construction / Destruction __________
 public:

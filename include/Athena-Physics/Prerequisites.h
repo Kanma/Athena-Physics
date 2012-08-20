@@ -1,6 +1,6 @@
 /** @file   Prerequisites.h
     @author Philip Abbet
-    
+
     Declaration of the types of the Athena-Physics module
 */
 
@@ -11,6 +11,18 @@
 #include <Athena-Physics/Config.h>
 #include <Bullet/btConfig.h>
 #include <btBulletDynamicsCommon.h>
+
+
+/// Used to export symbols from the library
+#if (ATHENA_PLATFORM == ATHENA_PLATFORM_WIN32) && !ATHENA_GRAPHICS_STATIC
+#    ifdef ATHENA_PHYSICS_EXPORTS
+#        define ATHENA_PHYSICS_SYMBOL   __declspec(dllexport)
+#    else
+#        define ATHENA_PHYSICS_SYMBOL   __declspec(dllimport)
+#    endif
+#else
+#    define ATHENA_PHYSICS_SYMBOL
+#endif
 
 
 //----------------------------------------------------------------------------------------
@@ -31,7 +43,7 @@ namespace Athena
         class GhostObject;
         class PhysicalComponent;
         class World;
-        
+
         class CompoundShape;
         class PrimitiveShape;
         class StaticTriMeshShape;
@@ -45,6 +57,8 @@ namespace Athena
     	/// @brief	Initialize the Physics module
     	//------------------------------------------------------------------------------------
         extern void initialize();
+
+        ATHENA_PHYSICS_SYMBOL extern const char* VERSION;
     }
 }
 

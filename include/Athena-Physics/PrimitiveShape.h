@@ -19,7 +19,7 @@ namespace Physics {
 ///
 /// The actual shape and its dimensions can be parametrized
 //---------------------------------------------------------------------------------------
-class ATHENA_SYMBOL PrimitiveShape: public CollisionShape
+class ATHENA_PHYSICS_SYMBOL PrimitiveShape: public CollisionShape
 {
     //_____ Internal types __________
 public:

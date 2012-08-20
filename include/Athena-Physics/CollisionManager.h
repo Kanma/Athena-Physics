@@ -30,7 +30,7 @@ namespace Physics {
 /// By default, all the Worlds shares the same Collision Manager. A World might choose to
 /// use its own Collision Manager though.
 //---------------------------------------------------------------------------------------
-class ATHENA_SYMBOL CollisionManager: public btOverlapFilterCallback
+class ATHENA_PHYSICS_SYMBOL CollisionManager: public btOverlapFilterCallback
 {
     //_____ Internal types __________
 public:
