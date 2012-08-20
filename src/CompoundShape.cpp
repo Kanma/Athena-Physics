@@ -1,7 +1,7 @@
-/**	@file	CompoundShape.cpp
-	@author	Philip Abbet
+/** @file   CompoundShape.cpp
+    @author Philip Abbet
 
-	Implementation of the class 'Athena::Physics::CompoundShape'
+    Implementation of the class 'Athena::Physics::CompoundShape'
 */
 
 #include <Athena-Physics/CompoundShape.h>
@@ -42,14 +42,14 @@ CompoundShape::~CompoundShape()
 
 CompoundShape* CompoundShape::create(const std::string& strName, ComponentsList* pList)
 {
-	return new CompoundShape(strName, pList);
+    return new CompoundShape(strName, pList);
 }
 
 //-----------------------------------------------------------------------
 
 CompoundShape* CompoundShape::cast(Component* pComponent)
 {
-	return dynamic_cast<CompoundShape*>(pComponent);
+    return dynamic_cast<CompoundShape*>(pComponent);
 }
 
 
@@ -230,12 +230,12 @@ Math::Vector3 CompoundShape::getChildSize(unsigned int childIndex) const
     // Assertions
     assert(childIndex < getNbChildShapes());
     assert(m_pCollisionShape);
-    
+
     btBoxShape* pShape = dynamic_cast<btBoxShape*>(
                             dynamic_cast<btCompoundShape*>(m_pCollisionShape)->getChildShape(childIndex));
     if (pShape)
         return fromBullet(pShape->getHalfExtentsWithMargin()) * 2.0f;
-    
+
     return Vector3::ZERO;
 }
 
@@ -249,7 +249,7 @@ Math::Real CompoundShape::getChildRadius(unsigned int childIndex) const
 
     btCollisionShape* pChild =
         dynamic_cast<btCompoundShape*>(m_pCollisionShape)->getChildShape(childIndex);
-    
+
     switch (pChild->getShapeType())
     {
         case CAPSULE_SHAPE_PROXYTYPE:
@@ -264,7 +264,7 @@ Math::Real CompoundShape::getChildRadius(unsigned int childIndex) const
         case SPHERE_SHAPE_PROXYTYPE:
             return dynamic_cast<btSphereShape*>(pChild)->getRadius();
     }
-    
+
     return 0.0f;
 }
 
@@ -278,7 +278,7 @@ Math::Real CompoundShape::getChildHeight(unsigned int childIndex) const
 
     btCollisionShape* pChild =
         dynamic_cast<btCompoundShape*>(m_pCollisionShape)->getChildShape(childIndex);
-    
+
     switch (pChild->getShapeType())
     {
         case CAPSULE_SHAPE_PROXYTYPE:
@@ -303,7 +303,7 @@ Math::Real CompoundShape::getChildHeight(unsigned int childIndex) const
             }
         }
     }
-    
+
     return 0.0f;
 }
 
@@ -341,7 +341,7 @@ PrimitiveShape::tAxis CompoundShape::getChildAxis(unsigned int childIndex) const
         case 1: return PrimitiveShape::AXIS_Y;
         case 2: return PrimitiveShape::AXIS_Z;
     }
-    
+
     return PrimitiveShape::AXIS_Y;
 }
 
@@ -355,7 +355,7 @@ PrimitiveShape::tShape CompoundShape::getChildShape(unsigned int childIndex) con
 
     btCollisionShape* pChild =
         dynamic_cast<btCompoundShape*>(m_pCollisionShape)->getChildShape(childIndex);
-    
+
     switch (pChild->getShapeType())
     {
         case BOX_SHAPE_PROXYTYPE:       return PrimitiveShape::SHAPE_BOX;
@@ -364,7 +364,7 @@ PrimitiveShape::tShape CompoundShape::getChildShape(unsigned int childIndex) con
         case CYLINDER_SHAPE_PROXYTYPE:  return PrimitiveShape::SHAPE_CYLINDER;
         case SPHERE_SHAPE_PROXYTYPE:    return PrimitiveShape::SHAPE_SPHERE;
     }
-    
+
     return PrimitiveShape::SHAPE_BOX;
 }
 
@@ -379,7 +379,7 @@ void CompoundShape::getChildTransforms(unsigned int childIndex, Math::Vector3 &p
 
     btTransform transform =
         dynamic_cast<btCompoundShape*>(m_pCollisionShape)->getChildTransform(childIndex);
-    
+
     position = fromBullet(transform.getOrigin());
     orientation = fromBullet(transform.getRotation());
 }
@@ -392,19 +392,19 @@ Utils::PropertiesList* CompoundShape::getProperties() const
     // Assertions
     assert(m_pCollisionShape);
 
-	// Call the base class implementation
-	PropertiesList* pProperties = CollisionShape::getProperties();
+    // Call the base class implementation
+    PropertiesList* pProperties = CollisionShape::getProperties();
 
-	// Create the category belonging to this type
-	pProperties->selectCategory(TYPE, false);
+    // Create the category belonging to this type
+    pProperties->selectCategory(TYPE, false);
 
     for (unsigned int i = 0; i < getNbChildShapes(); ++i)
     {
         btCollisionShape* pChild =
             dynamic_cast<btCompoundShape*>(m_pCollisionShape)->getChildShape(i);
- 
+
         Variant* pStruct = new Variant(Variant::STRUCT);
-        
+
         switch (pChild->getShapeType())
         {
             case BOX_SHAPE_PROXYTYPE:
@@ -455,47 +455,47 @@ Utils::PropertiesList* CompoundShape::getProperties() const
                     break;
             }
         }
-        
+
         Vector3 position;
         Quaternion orientation;
         getChildTransforms(i, position, orientation);
 
         pStruct->setField("position", new Variant(position));
         pStruct->setField("orientation", new Variant(orientation));
-        
+
         pProperties->set("shape_" + StringConverter::toString(i), pStruct);
     }
 
-	// Returns the list
-	return pProperties;
+    // Returns the list
+    return pProperties;
 }
 
 //-----------------------------------------------------------------------
 
 bool CompoundShape::setProperty(const std::string& strCategory, const std::string& strName,
-								Utils::Variant* pValue)
+                                Utils::Variant* pValue)
 {
-	assert(!strCategory.empty());
-	assert(!strName.empty());
-	assert(pValue);
+    assert(!strCategory.empty());
+    assert(!strName.empty());
+    assert(pValue);
 
-	if (strCategory == TYPE)
-		return CompoundShape::setProperty(strName, pValue);
+    if (strCategory == TYPE)
+        return CompoundShape::setProperty(strName, pValue);
 
-	return CollisionShape::setProperty(strCategory, strName, pValue);
+    return CollisionShape::setProperty(strCategory, strName, pValue);
 }
 
 //-----------------------------------------------------------------------
 
 bool CompoundShape::setProperty(const std::string& strName, Utils::Variant* pValue)
 {
-	// Assertions
-	assert(!strName.empty());
-	assert(pValue);
+    // Assertions
+    assert(!strName.empty());
+    assert(pValue);
 
     // Shape
-	if (StringUtils::startsWith(strName, "shape_"))
-	{
+    if (StringUtils::startsWith(strName, "shape_"))
+    {
         string strType;
         Vector3 size(1.0f, 1.0f, 1.0f);
         float radius = 1.0f;
@@ -503,7 +503,7 @@ bool CompoundShape::setProperty(const std::string& strName, Utils::Variant* pVal
         PrimitiveShape::tAxis axis = PrimitiveShape::AXIS_Y;
         Vector3 position(Vector3::ZERO);
         Quaternion orientation(Quaternion::IDENTITY);
-	    
+
         Variant* pField = pValue->getField("type");
         if (pField)
             strType = pField->toString();
@@ -536,7 +536,7 @@ bool CompoundShape::setProperty(const std::string& strName, Utils::Variant* pVal
         pField = pValue->getField("orientation");
         if (pField)
             orientation = pField->toQuaternion();
-        
+
         if (strType == "BOX")
             addBox(size, position, orientation);
         else if (strType == "CAPSULE")
@@ -549,8 +549,8 @@ bool CompoundShape::setProperty(const std::string& strName, Utils::Variant* pVal
             addSphere(radius, position, orientation);
     }
 
-	// Destroy the value
-	delete pValue;
+    // Destroy the value
+    delete pValue;
 
-	return true;
+    return true;
 }

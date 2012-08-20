@@ -1,7 +1,7 @@
-/**	@file	PrimitiveShape.cpp
-	@author	Philip Abbet
+/** @file   PrimitiveShape.cpp
+    @author Philip Abbet
 
-	Implementation of the class 'Athena::Physics::PrimitiveShape'
+    Implementation of the class 'Athena::Physics::PrimitiveShape'
 */
 
 #include <Athena-Physics/PrimitiveShape.h>
@@ -39,14 +39,14 @@ PrimitiveShape::~PrimitiveShape()
 
 PrimitiveShape* PrimitiveShape::create(const std::string& strName, ComponentsList* pList)
 {
-	return new PrimitiveShape(strName, pList);
+    return new PrimitiveShape(strName, pList);
 }
 
 //-----------------------------------------------------------------------
 
 PrimitiveShape* PrimitiveShape::cast(Component* pComponent)
 {
-	return dynamic_cast<PrimitiveShape*>(pComponent);
+    return dynamic_cast<PrimitiveShape*>(pComponent);
 }
 
 
@@ -123,7 +123,7 @@ void PrimitiveShape::createCone(const Math::Real& radius, const Math::Real& heig
         pBody->setCollisionShape(0);
 
     delete m_pCollisionShape;
-    
+
     switch (axis)
     {
         case AXIS_X:
@@ -160,7 +160,7 @@ void PrimitiveShape::createCylinder(const Math::Real& radius, const Math::Real& 
         pBody->setCollisionShape(0);
 
     delete m_pCollisionShape;
-    
+
     switch (axis)
     {
         case AXIS_X:
@@ -209,10 +209,10 @@ Math::Vector3 PrimitiveShape::getSize() const
 {
     if (!m_pCollisionShape)
         return Vector3::ZERO;
-    
+
     if (m_shape == SHAPE_BOX)
         return fromBullet(dynamic_cast<btBoxShape*>(m_pCollisionShape)->getHalfExtentsWithMargin()) * 2.0f;
-    
+
     return Vector3::ZERO;
 }
 
@@ -222,7 +222,7 @@ Math::Real PrimitiveShape::getRadius() const
 {
     if (!m_pCollisionShape)
         return 0.0f;
-    
+
     switch (m_shape)
     {
         case SHAPE_CAPSULE:
@@ -237,7 +237,7 @@ Math::Real PrimitiveShape::getRadius() const
         case SHAPE_SPHERE:
             return dynamic_cast<btSphereShape*>(m_pCollisionShape)->getRadius();
     }
-    
+
     return 0.0f;
 }
 
@@ -247,7 +247,7 @@ Math::Real PrimitiveShape::getHeight() const
 {
     if (!m_pCollisionShape)
         return 0.0f;
-    
+
     switch (m_shape)
     {
         case SHAPE_CAPSULE:
@@ -269,7 +269,7 @@ Math::Real PrimitiveShape::getHeight() const
                     return dynamic_cast<btCylinderShape*>(m_pCollisionShape)->getHalfExtentsWithMargin().getZ();
             }
     }
-    
+
     return 0.0f;
 }
 
@@ -278,16 +278,16 @@ Math::Real PrimitiveShape::getHeight() const
 
 Utils::PropertiesList* PrimitiveShape::getProperties() const
 {
-	// Call the base class implementation
-	PropertiesList* pProperties = CollisionShape::getProperties();
+    // Call the base class implementation
+    PropertiesList* pProperties = CollisionShape::getProperties();
 
-	// Create the category belonging to this type
-	pProperties->selectCategory(TYPE, false);
+    // Create the category belonging to this type
+    pProperties->selectCategory(TYPE, false);
 
     if (m_pCollisionShape)
     {
         Variant* pStruct = new Variant(Variant::STRUCT);
-        
+
         switch (m_shape)
         {
             case SHAPE_BOX:
@@ -336,46 +336,46 @@ Utils::PropertiesList* PrimitiveShape::getProperties() const
                     break;
             }
         }
-        
+
         pProperties->set("shape", pStruct);
     }
 
-	// Returns the list
-	return pProperties;
+    // Returns the list
+    return pProperties;
 }
 
 //-----------------------------------------------------------------------
 
 bool PrimitiveShape::setProperty(const std::string& strCategory, const std::string& strName,
-								Utils::Variant* pValue)
+                                Utils::Variant* pValue)
 {
-	assert(!strCategory.empty());
-	assert(!strName.empty());
-	assert(pValue);
+    assert(!strCategory.empty());
+    assert(!strName.empty());
+    assert(pValue);
 
-	if (strCategory == TYPE)
-		return PrimitiveShape::setProperty(strName, pValue);
+    if (strCategory == TYPE)
+        return PrimitiveShape::setProperty(strName, pValue);
 
-	return CollisionShape::setProperty(strCategory, strName, pValue);
+    return CollisionShape::setProperty(strCategory, strName, pValue);
 }
 
 //-----------------------------------------------------------------------
 
 bool PrimitiveShape::setProperty(const std::string& strName, Utils::Variant* pValue)
 {
-	// Assertions
-	assert(!strName.empty());
-	assert(pValue);
+    // Assertions
+    assert(!strName.empty());
+    assert(pValue);
 
     // Shape
-	if (strName == "shape")
-	{
+    if (strName == "shape")
+    {
         string strType;
         Vector3 size(1.0f, 1.0f, 1.0f);
         float radius = 1.0f;
         float height = 1.0f;
         tAxis axis = AXIS_Y;
-	    
+
         Variant* pField = pValue->getField("type");
         if (pField)
             strType = pField->toString();
@@ -400,7 +400,7 @@ bool PrimitiveShape::setProperty(const std::string& strName, Utils::Variant* pVa
             else if (pField->toString() == "Z")
                 axis = AXIS_Z;
         }
-        
+
         if (strType == "BOX")
             createBox(size);
         else if (strType == "CAPSULE")
@@ -413,8 +413,8 @@ bool PrimitiveShape::setProperty(const std::string& strName, Utils::Variant* pVa
             createSphere(radius);
     }
 
-	// Destroy the value
-	delete pValue;
+    // Destroy the value
+    delete pValue;
 
-	return true;
+    return true;
 }

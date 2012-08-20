@@ -1,7 +1,7 @@
-/**	@file	Conversions.cpp
-	@author	Philip Abbet
+/** @file   Conversions.cpp
+    @author Philip Abbet
 
-	Implementation of the conversion functions between Athena and Bullet types
+    Implementation of the conversion functions between Athena and Bullet types
 */
 
 #include <Athena-Physics/Conversions.h>

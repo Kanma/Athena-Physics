@@ -1,7 +1,7 @@
-/**	@file	CollisionObject.cpp
-	@author	Philip Abbet
+/** @file   CollisionObject.cpp
+    @author Philip Abbet
 
-	Implementation of the class 'Athena::Physics::CollisionObject'
+    Implementation of the class 'Athena::Physics::CollisionObject'
 */
 
 #include <Athena-Physics/CollisionObject.h>
@@ -39,14 +39,14 @@ CollisionObject::~CollisionObject()
 
 CollisionObject* CollisionObject::create(const std::string& strName, ComponentsList* pList)
 {
-	return new CollisionObject(strName, pList);
+    return new CollisionObject(strName, pList);
 }
 
 //-----------------------------------------------------------------------
 
 CollisionObject* CollisionObject::cast(Component* pComponent)
 {
-	return dynamic_cast<CollisionObject*>(pComponent);
+    return dynamic_cast<CollisionObject*>(pComponent);
 }
 
 
@@ -54,48 +54,48 @@ CollisionObject* CollisionObject::cast(Component* pComponent)
 
 Utils::PropertiesList* CollisionObject::getProperties() const
 {
-	// Call the base class implementation
-	PropertiesList* pProperties = PhysicalComponent::getProperties();
+    // Call the base class implementation
+    PropertiesList* pProperties = PhysicalComponent::getProperties();
 
-	// Create the category belonging to this type
-	pProperties->selectCategory(TYPE, false);
+    // Create the category belonging to this type
+    pProperties->selectCategory(TYPE, false);
 
     // Group
     pProperties->set("collision-group", new Variant(m_collisionGroup));
 
-	// Returns the list
-	return pProperties;
+    // Returns the list
+    return pProperties;
 }
 
 //-----------------------------------------------------------------------
 
 bool CollisionObject::setProperty(const std::string& strCategory, const std::string& strName,
-								Utils::Variant* pValue)
+                                Utils::Variant* pValue)
 {
-	assert(!strCategory.empty());
-	assert(!strName.empty());
-	assert(pValue);
+    assert(!strCategory.empty());
+    assert(!strName.empty());
+    assert(pValue);
 
-	if (strCategory == TYPE)
-		return CollisionObject::setProperty(strName, pValue);
+    if (strCategory == TYPE)
+        return CollisionObject::setProperty(strName, pValue);
 
-	return PhysicalComponent::setProperty(strCategory, strName, pValue);
+    return PhysicalComponent::setProperty(strCategory, strName, pValue);
 }
 
 //-----------------------------------------------------------------------
 
 bool CollisionObject::setProperty(const std::string& strName, Utils::Variant* pValue)
 {
-	// Assertions
-	assert(!strName.empty());
-	assert(pValue);
+    // Assertions
+    assert(!strName.empty());
+    assert(pValue);
 
-	// Group
-	if (strName == "collision-group")
+    // Group
+    if (strName == "collision-group")
         setCollisionGroup(pValue->toUChar());
 
-	// Destroy the value
-	delete pValue;
+    // Destroy the value
+    delete pValue;
 
-	return true;
+    return true;
 }

@@ -1,7 +1,7 @@
-/**	@file	PhysicalComponent.cpp
-	@author	Philip Abbet
+/** @file   PhysicalComponent.cpp
+    @author Philip Abbet
 
-	Implementation of the class 'Athena::Physics::PhysicalComponent'
+    Implementation of the class 'Athena::Physics::PhysicalComponent'
 */
 
 #include <Athena-Physics/PhysicalComponent.h>
@@ -25,7 +25,7 @@ const std::string PhysicalComponent::TYPE = "Athena/Physics/PhysicalComponent";
 PhysicalComponent::PhysicalComponent(const std::string& strName, ComponentsList* pList)
 : Component(strName, pList)
 {
-	m_id.type = COMP_PHYSICAL;
+    m_id.type = COMP_PHYSICAL;
 }
 
 //-----------------------------------------------------------------------
@@ -38,14 +38,14 @@ PhysicalComponent::~PhysicalComponent()
 
 PhysicalComponent* PhysicalComponent::create(const std::string& strName, ComponentsList* pList)
 {
-	return new PhysicalComponent(strName, pList);
+    return new PhysicalComponent(strName, pList);
 }
 
 //-----------------------------------------------------------------------
 
 PhysicalComponent* PhysicalComponent::cast(Component* pComponent)
 {
-	return dynamic_cast<PhysicalComponent*>(pComponent);
+    return dynamic_cast<PhysicalComponent*>(pComponent);
 }
 
 
@@ -57,7 +57,7 @@ World* PhysicalComponent::getWorld() const
         return dynamic_cast<World*>(m_pList->getEntity()->getScene()->getMainComponent(Entities::COMP_PHYSICAL));
     else if (m_pList->getScene())
         return dynamic_cast<World*>(m_pList->getScene()->getMainComponent(Entities::COMP_PHYSICAL));
-    
+
     return 0;
 }
 
@@ -66,41 +66,41 @@ World* PhysicalComponent::getWorld() const
 
 Utils::PropertiesList* PhysicalComponent::getProperties() const
 {
-	// Call the base class implementation
-	PropertiesList* pProperties = Component::getProperties();
+    // Call the base class implementation
+    PropertiesList* pProperties = Component::getProperties();
 
-	// Create the category belonging to this type
-	pProperties->selectCategory(TYPE, false);
+    // Create the category belonging to this type
+    pProperties->selectCategory(TYPE, false);
 
-	// Returns the list
-	return pProperties;
+    // Returns the list
+    return pProperties;
 }
 
 //-----------------------------------------------------------------------
 
 bool PhysicalComponent::setProperty(const std::string& strCategory, const std::string& strName,
-								Utils::Variant* pValue)
+                                Utils::Variant* pValue)
 {
-	assert(!strCategory.empty());
-	assert(!strName.empty());
-	assert(pValue);
+    assert(!strCategory.empty());
+    assert(!strName.empty());
+    assert(pValue);
 
-	if (strCategory == TYPE)
-		return PhysicalComponent::setProperty(strName, pValue);
+    if (strCategory == TYPE)
+        return PhysicalComponent::setProperty(strName, pValue);
 
-	return Component::setProperty(strCategory, strName, pValue);
+    return Component::setProperty(strCategory, strName, pValue);
 }
 
 //-----------------------------------------------------------------------
 
 bool PhysicalComponent::setProperty(const std::string& strName, Utils::Variant* pValue)
 {
-	// Assertions
-	assert(!strName.empty());
-	assert(pValue);
+    // Assertions
+    assert(!strName.empty());
+    assert(pValue);
 
-	// Destroy the value
-	delete pValue;
+    // Destroy the value
+    delete pValue;
 
-	return true;
+    return true;
 }

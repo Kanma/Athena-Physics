@@ -1,7 +1,7 @@
-/**	@file	StaticTriMeshShape.cpp
-	@author	Philip Abbet
+/** @file   StaticTriMeshShape.cpp
+    @author Philip Abbet
 
-	Implementation of the class 'Athena::Physics::StaticTriMeshShape'
+    Implementation of the class 'Athena::Physics::StaticTriMeshShape'
 */
 
 #include <Athena-Physics/StaticTriMeshShape.h>
@@ -36,7 +36,7 @@ StaticTriMeshShape::~StaticTriMeshShape()
     if (m_sourceType == SOURCE_INDEXED_MESHES)
     {
         delete m_indexedStrider;
-        
+
         for (unsigned int i = 0; i < m_ownedIndexedMeshes.size(); ++i)
         {
             delete[] m_ownedIndexedMeshes[i].m_triangleIndexBase;
@@ -49,14 +49,14 @@ StaticTriMeshShape::~StaticTriMeshShape()
 
 StaticTriMeshShape* StaticTriMeshShape::create(const std::string& strName, ComponentsList* pList)
 {
-	return new StaticTriMeshShape(strName, pList);
+    return new StaticTriMeshShape(strName, pList);
 }
 
 //-----------------------------------------------------------------------
 
 StaticTriMeshShape* StaticTriMeshShape::cast(Component* pComponent)
 {
-	return dynamic_cast<StaticTriMeshShape*>(pComponent);
+    return dynamic_cast<StaticTriMeshShape*>(pComponent);
 }
 
 
@@ -74,7 +74,7 @@ bool StaticTriMeshShape::addMesh(unsigned int nbVertices, const float* pVertices
 
     if (m_sourceType != SOURCE_INDEXED_MESHES)
         return false;
-    
+
     if (!m_indexedStrider)
         m_indexedStrider = new btTriangleIndexVertexArray();
 
@@ -89,7 +89,7 @@ bool StaticTriMeshShape::addMesh(unsigned int nbVertices, const float* pVertices
     {
         mesh.m_triangleIndexBase = new unsigned char[nbIndices * 3 * sizeof(int)];
         memcpy((void*) mesh.m_triangleIndexBase, pIndices, nbIndices * 3 * sizeof(int));
-        
+
         mesh.m_vertexBase = new unsigned char[nbVertices * 3 * sizeof(float)];
         memcpy((void*) mesh.m_vertexBase, pVertices, nbVertices * 3 * sizeof(float));
     }
@@ -113,7 +113,7 @@ bool StaticTriMeshShape::addMesh(unsigned int nbVertices, const float* pVertices
 
     if (pBody)
         pBody->setCollisionShape(this);
-    
+
     return true;
 }
 
@@ -131,7 +131,7 @@ bool StaticTriMeshShape::addMesh(unsigned int nbVertices, const double* pVertice
 
     if (m_sourceType != SOURCE_INDEXED_MESHES)
         return false;
-    
+
     if (!m_indexedStrider)
         m_indexedStrider = new btTriangleIndexVertexArray();
 
@@ -146,7 +146,7 @@ bool StaticTriMeshShape::addMesh(unsigned int nbVertices, const double* pVertice
     {
         mesh.m_triangleIndexBase = new unsigned char[nbIndices * 3 * sizeof(int)];
         memcpy((void*) mesh.m_triangleIndexBase, pIndices, nbIndices * 3 * sizeof(int));
-        
+
         mesh.m_vertexBase = new unsigned char[nbVertices * 3 * sizeof(double)];
         memcpy((void*) mesh.m_vertexBase, pVertices, nbVertices * 3 * sizeof(double));
     }
@@ -170,7 +170,7 @@ bool StaticTriMeshShape::addMesh(unsigned int nbVertices, const double* pVertice
 
     if (pBody)
         pBody->setCollisionShape(this);
-    
+
     return true;
 }
 
@@ -191,7 +191,7 @@ bool StaticTriMeshShape::addMesh(unsigned int nbVertices, const Math::Vector3* p
 
     if (memManagment == MEM_REFERENCE)
         memManagment = MEM_COPY;
-    
+
     if (!m_indexedStrider)
         m_indexedStrider = new btTriangleIndexVertexArray();
 
@@ -210,7 +210,7 @@ bool StaticTriMeshShape::addMesh(unsigned int nbVertices, const Math::Vector3* p
         pDst[0] = (*pSrc).x;
         pDst[1] = (*pSrc).y;
         pDst[2] = (*pSrc).z;
-        
+
         ++pSrc;
         pDst += 3;
     }
@@ -223,7 +223,7 @@ bool StaticTriMeshShape::addMesh(unsigned int nbVertices, const Math::Vector3* p
     else
     {
         mesh.m_triangleIndexBase = (const unsigned char*) pIndices;
-    
+
         delete[] pVertices;
     }
 
@@ -240,7 +240,7 @@ bool StaticTriMeshShape::addMesh(unsigned int nbVertices, const Math::Vector3* p
 
     if (pBody)
         pBody->setCollisionShape(this);
-    
+
     return true;
 }
 
@@ -249,41 +249,41 @@ bool StaticTriMeshShape::addMesh(unsigned int nbVertices, const Math::Vector3* p
 
 Utils::PropertiesList* StaticTriMeshShape::getProperties() const
 {
-	// Call the base class implementation
-	PropertiesList* pProperties = CollisionShape::getProperties();
+    // Call the base class implementation
+    PropertiesList* pProperties = CollisionShape::getProperties();
 
-	// Create the category belonging to this type
-	pProperties->selectCategory(TYPE, false);
+    // Create the category belonging to this type
+    pProperties->selectCategory(TYPE, false);
 
-	// Returns the list
-	return pProperties;
+    // Returns the list
+    return pProperties;
 }
 
 //-----------------------------------------------------------------------
 
 bool StaticTriMeshShape::setProperty(const std::string& strCategory, const std::string& strName,
-								Utils::Variant* pValue)
+                                Utils::Variant* pValue)
 {
-	assert(!strCategory.empty());
-	assert(!strName.empty());
-	assert(pValue);
+    assert(!strCategory.empty());
+    assert(!strName.empty());
+    assert(pValue);
 
-	if (strCategory == TYPE)
-		return StaticTriMeshShape::setProperty(strName, pValue);
+    if (strCategory == TYPE)
+        return StaticTriMeshShape::setProperty(strName, pValue);
 
-	return CollisionShape::setProperty(strCategory, strName, pValue);
+    return CollisionShape::setProperty(strCategory, strName, pValue);
 }
 
 //-----------------------------------------------------------------------
 
 bool StaticTriMeshShape::setProperty(const std::string& strName, Utils::Variant* pValue)
 {
-	// Assertions
-	assert(!strName.empty());
-	assert(pValue);
+    // Assertions
+    assert(!strName.empty());
+    assert(pValue);
 
-	// Destroy the value
-	delete pValue;
+    // Destroy the value
+    delete pValue;
 
-	return true;
+    return true;
 }
