@@ -16,7 +16,8 @@ using namespace Athena::Physics;
 
 /*********************************** EXTERNAL FUNCTIONS *********************************/
 
-// extern bool bind_Visual_Camera(v8::Handle<Object> parent);
+extern bool bind_PhysicalComponent(v8::Handle<Object> parent);
+extern bool bind_World(v8::Handle<Object> parent);
 
 
 /****************************** INITIALISATION OF THE MODULE ****************************/
@@ -41,6 +42,7 @@ extern "C" {
 
         parent->Set(String::New("VERSION"), String::New(Athena::Physics::VERSION));
 
-        return true;
+        return bind_PhysicalComponent(parent) &&
+               bind_World(parent);
     }
 }

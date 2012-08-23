@@ -6,6 +6,7 @@ xmake_import_search_paths(ATHENA_PHYSICS)
 # List the source files
 set(SRCS module.cpp
          PhysicalComponent.cpp
+         World.cpp
 )
 
 set(JS_SRCS ""

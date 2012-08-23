@@ -50,8 +50,10 @@ public:
 public:
     //-----------------------------------------------------------------------------------
     /// @brief  Constructor
+    ///
+    /// @param  strName     Name of the component (not used, kept for compatibility)
     //-----------------------------------------------------------------------------------
-    World(Entities::ComponentsList* pList);
+    World(const std::string& strName, Entities::ComponentsList* pList);
 
     //-----------------------------------------------------------------------------------
     /// @brief  Create a new component (Component creation method)

@@ -27,7 +27,7 @@ const std::string World::DEFAULT_NAME   = "PhysicalWorld";
 
 /***************************** CONSTRUCTION / DESTRUCTION ******************************/
 
-World::World(ComponentsList* pList)
+World::World(const std::string& strName, ComponentsList* pList)
 : PhysicalComponent(DEFAULT_NAME, pList), m_type(WORLD_RIGID_BODY), m_pWorld(0),
   m_pDispatcher(0), m_pBroadphase(0), m_pConstraintSolver(0), m_pCollisionConfiguration(0),
   m_pCollisionManager(&CollisionManager::DefaultManager)
@@ -56,7 +56,7 @@ World::~World()
 
 World* World::create(const std::string& strName, ComponentsList* pList)
 {
-    return new World(pList);
+    return new World(strName, pList);
 }
 
 //-----------------------------------------------------------------------
