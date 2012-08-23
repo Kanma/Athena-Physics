@@ -18,6 +18,10 @@
 #include <Athena-Physics/World.h>
 #include <Athena-Entities/ComponentsManager.h>
 
+#if ATHENA_PHYSICS_SCRIPTING
+    #include <Athena-Physics/Scripting.h>
+#endif
+
 using namespace Athena::Entities;
 
 

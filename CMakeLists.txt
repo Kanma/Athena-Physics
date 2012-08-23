@@ -86,5 +86,16 @@ include("${XMAKE_DEPENDENCIES_DIR}/XMake/XMake.cmake")
 # Process subdirectories
 
 add_subdirectory(dependencies)
+
+if (DEFINED ATHENA_SCRIPTING_ENABLED AND ATHENA_SCRIPTING_ENABLED)
+    set(ATHENA_PHYSICS_SCRIPTING ON)
+else()
+    set(ATHENA_PHYSICS_SCRIPTING OFF)
+endif()
+
 add_subdirectory(include)
 add_subdirectory(src)
+
+if (DEFINED ATHENA_SCRIPTING_ENABLED AND ATHENA_SCRIPTING_ENABLED)
+    add_subdirectory(scripting)
+endif()
