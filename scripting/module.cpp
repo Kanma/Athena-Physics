@@ -16,6 +16,7 @@ using namespace Athena::Physics;
 
 /*********************************** EXTERNAL FUNCTIONS *********************************/
 
+extern bool bind_CollisionShape(v8::Handle<Object> parent);
 extern bool bind_PhysicalComponent(v8::Handle<Object> parent);
 extern bool bind_World(v8::Handle<Object> parent);
 
@@ -43,6 +44,7 @@ extern "C" {
         parent->Set(String::New("VERSION"), String::New(Athena::Physics::VERSION));
 
         return bind_PhysicalComponent(parent) &&
-               bind_World(parent);
+               bind_World(parent) &&
+               bind_CollisionShape(parent);
     }
 }
