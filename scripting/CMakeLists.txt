@@ -7,6 +7,7 @@ xmake_import_search_paths(ATHENA_PHYSICS)
 set(SRCS module.cpp
          CollisionShape.cpp
          PhysicalComponent.cpp
+         PrimitiveShape.cpp
          World.cpp
 )
 
