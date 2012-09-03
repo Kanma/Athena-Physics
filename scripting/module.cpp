@@ -20,6 +20,7 @@ extern bool bind_Body(v8::Handle<Object> parent);
 extern bool bind_CollisionObject(v8::Handle<Object> parent);
 extern bool bind_CollisionShape(v8::Handle<Object> parent);
 extern bool bind_CompoundShape(v8::Handle<Object> parent);
+extern bool bind_GhostObject(v8::Handle<Object> parent);
 extern bool bind_PhysicalComponent(v8::Handle<Object> parent);
 extern bool bind_PrimitiveShape(v8::Handle<Object> parent);
 extern bool bind_World(v8::Handle<Object> parent);
@@ -53,6 +54,7 @@ extern "C" {
                bind_PrimitiveShape(parent) &&
                bind_CompoundShape(parent) &&
                bind_CollisionObject(parent) &&
-               bind_Body(parent);
+               bind_Body(parent) &&
+               bind_GhostObject(parent);
     }
 }

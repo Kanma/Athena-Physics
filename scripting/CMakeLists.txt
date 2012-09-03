@@ -9,6 +9,7 @@ set(SRCS module.cpp
          CollisionObject.cpp
          CollisionShape.cpp
          CompoundShape.cpp
+         GhostObject.cpp
          PhysicalComponent.cpp
          PrimitiveShape.cpp
          World.cpp
