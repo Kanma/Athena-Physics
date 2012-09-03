@@ -64,7 +64,7 @@ public:
     //_____ Methods __________
 public:
     //-----------------------------------------------------------------------------------
-    /// @brief  Set the 'collision group' of the ghost object
+    /// @brief  Set the 'collision group' of the collision object
     //-----------------------------------------------------------------------------------
     inline void setCollisionGroup(tCollisionGroup group)
     {
@@ -72,7 +72,7 @@ public:
     }
 
     //-----------------------------------------------------------------------------------
-    /// @brief  Returns the 'collision group' of the ghost object
+    /// @brief  Returns the 'collision group' of the collision object
     //-----------------------------------------------------------------------------------
     inline tCollisionGroup getCollisionGroup() const
     {
