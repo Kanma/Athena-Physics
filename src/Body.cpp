@@ -1,7 +1,7 @@
-/**	@file	Body.cpp
-	@author	Philip Abbet
+/** @file   Body.cpp
+    @author Philip Abbet
 
-	Implementation of the class 'Athena::Physics::Body'
+    Implementation of the class 'Athena::Physics::Body'
 */
 
 #include <Athena-Physics/Body.h>
@@ -38,8 +38,8 @@ Body::Body(const std::string& strName, ComponentsList* pList)
     m_pBody = new btRigidBody(info);
     m_pBody->setUserPointer(this);
 
-	// Use the transforms of the entity by default
-	setTransforms(0);
+    // Use the transforms of the entity by default
+    setTransforms(0);
 }
 
 //-----------------------------------------------------------------------
@@ -55,14 +55,14 @@ Body::~Body()
 
 Body* Body::create(const std::string& strName, ComponentsList* pList)
 {
-	return new Body(strName, pList);
+    return new Body(strName, pList);
 }
 
 //-----------------------------------------------------------------------
 
 Body* Body::cast(Component* pComponent)
 {
-	return dynamic_cast<Body*>(pComponent);
+    return dynamic_cast<Body*>(pComponent);
 }
 
 
@@ -104,13 +104,13 @@ void Body::setKinematic(bool bKinematic)
 
     if (bKinematic)
     {
-		m_pBody->setCollisionFlags(m_pBody->getCollisionFlags() | btCollisionObject::CF_KINEMATIC_OBJECT);
-	    m_pBody->setActivationState(DISABLE_DEACTIVATION);
-	}
-	else
-	{
-		m_pBody->setCollisionFlags(m_pBody->getCollisionFlags() & ~btCollisionObject::CF_KINEMATIC_OBJECT);
-	    m_pBody->setActivationState(WANTS_DEACTIVATION);
+        m_pBody->setCollisionFlags(m_pBody->getCollisionFlags() | btCollisionObject::CF_KINEMATIC_OBJECT);
+        m_pBody->setActivationState(DISABLE_DEACTIVATION);
+    }
+    else
+    {
+        m_pBody->setCollisionFlags(m_pBody->getCollisionFlags() & ~btCollisionObject::CF_KINEMATIC_OBJECT);
+        m_pBody->setActivationState(WANTS_DEACTIVATION);
     }
 
     updateBody();
@@ -124,7 +124,7 @@ void Body::setMass(Math::Real mass)
     assert(m_pBody);
 
     m_mass = mass;
-    
+
     if (isKinematic())
         return;
 
@@ -137,18 +137,18 @@ void Body::setCollisionShape(CollisionShape* pShape)
 {
     if (pShape == m_pShape)
         return;
-        
+
     // Unlink from the current shape
     if (m_pShape)
     {
         removeLinkTo(m_pShape);
         m_pShape = 0;
     }
-    
+
     m_pShape = pShape;
-    
+
     // Link with the new shape
-	if (m_pShape)
+    if (m_pShape)
         addLinkTo(m_pShape);
 
     updateBody();
@@ -221,19 +221,19 @@ void Body::mustUnlinkComponent(Component* pComponent)
 
 Utils::PropertiesList* Body::getProperties() const
 {
-	// Call the base class implementation
-	PropertiesList* pProperties = CollisionObject::getProperties();
+    // Call the base class implementation
+    PropertiesList* pProperties = CollisionObject::getProperties();
 
-	// Create the category belonging to this type
-	pProperties->selectCategory(TYPE, false);
+    // Create the category belonging to this type
+    pProperties->selectCategory(TYPE, false);
 
-	// Type
-	if (isKinematic())
-	    pProperties->set("type", new Variant("KINEMATIC"));
-	else if (isStatic())
-	    pProperties->set("type", new Variant("STATIC"));
-	else
-	    pProperties->set("type", new Variant("DYNAMIC"));
+    // Type
+    if (isKinematic())
+        pProperties->set("type", new Variant("KINEMATIC"));
+    else if (isStatic())
+        pProperties->set("type", new Variant("STATIC"));
+    else
+        pProperties->set("type", new Variant("DYNAMIC"));
 
     // Mass
     pProperties->set("mass", new Variant(m_mass));
@@ -242,51 +242,51 @@ Utils::PropertiesList* Body::getProperties() const
     if (m_pShape)
         pProperties->set("shape", new Variant(m_pShape->getID().toString()));
 
-	// Returns the list
-	return pProperties;
+    // Returns the list
+    return pProperties;
 }
 
 //-----------------------------------------------------------------------
 
 bool Body::setProperty(const std::string& strCategory, const std::string& strName,
-								Utils::Variant* pValue)
+                                Utils::Variant* pValue)
 {
-	assert(!strCategory.empty());
-	assert(!strName.empty());
-	assert(pValue);
+    assert(!strCategory.empty());
+    assert(!strName.empty());
+    assert(pValue);
 
-	if (strCategory == TYPE)
-		return Body::setProperty(strName, pValue);
+    if (strCategory == TYPE)
+        return Body::setProperty(strName, pValue);
 
-	return CollisionObject::setProperty(strCategory, strName, pValue);
+    return CollisionObject::setProperty(strCategory, strName, pValue);
 }
 
 //-----------------------------------------------------------------------
 
 bool Body::setProperty(const std::string& strName, Utils::Variant* pValue)
 {
-	// Assertions
-	assert(!strName.empty());
-	assert(pValue);
+    // Assertions
+    assert(!strName.empty());
+    assert(pValue);
 
     // Declarations
     bool bUsed = true;
 
     // Type
-	if (strName == "type")
-	{
-	    setKinematic(pValue->toString() == "KINEMATIC");
+    if (strName == "type")
+    {
+        setKinematic(pValue->toString() == "KINEMATIC");
     }
 
-	// Mass
-	else if (strName == "mass")
-	{
-		setMass(pValue->toFloat());
-	}
+    // Mass
+    else if (strName == "mass")
+    {
+        setMass(pValue->toFloat());
+    }
 
-	// Shape
-	else if (strName == "shape")
-	{
+    // Shape
+    else if (strName == "shape")
+    {
         tComponentID id(pValue->toString());
 
         if (id.type == COMP_PHYSICAL)
@@ -301,10 +301,10 @@ bool Body::setProperty(const std::string& strName, Utils::Variant* pValue)
         {
             setCollisionShape(0);
         }
-	}
+    }
 
-	// Destroy the value
-	delete pValue;
+    // Destroy the value
+    delete pValue;
 
-	return bUsed;
+    return bUsed;
 }

@@ -1,7 +1,7 @@
-/**	@file	GhostObject.cpp
-	@author	Philip Abbet
+/** @file   GhostObject.cpp
+    @author Philip Abbet
 
-	Implementation of the class 'Athena::Physics::GhostObject'
+    Implementation of the class 'Athena::Physics::GhostObject'
 */
 
 #include <Athena-Physics/GhostObject.h>
@@ -37,8 +37,8 @@ GhostObject::GhostObject(const std::string& strName, ComponentsList* pList)
     m_pGhostObject->setCollisionFlags(m_pGhostObject->getCollisionFlags() | btCollisionObject::CF_NO_CONTACT_RESPONSE);
     m_pGhostObject->setUserPointer(this);
 
-	// Use the transforms of the entity by default
-	setTransforms(0);
+    // Use the transforms of the entity by default
+    setTransforms(0);
 }
 
 //-----------------------------------------------------------------------
@@ -55,14 +55,14 @@ GhostObject::~GhostObject()
 
 GhostObject* GhostObject::create(const std::string& strName, ComponentsList* pList)
 {
-	return new GhostObject(strName, pList);
+    return new GhostObject(strName, pList);
 }
 
 //-----------------------------------------------------------------------
 
 GhostObject* GhostObject::cast(Component* pComponent)
 {
-	return dynamic_cast<GhostObject*>(pComponent);
+    return dynamic_cast<GhostObject*>(pComponent);
 }
 
 
@@ -71,22 +71,22 @@ GhostObject* GhostObject::cast(Component* pComponent)
 void GhostObject::setCollisionShape(CollisionShape* pShape)
 {
     assert(m_pGhostObject);
-    
+
     if (pShape == m_pShape)
         return;
 
     if (m_pGhostObject->getCollisionShape())
         getWorld()->removeGhostObject(this);
-        
+
     // Unlink from the current shape
     if (m_pShape)
     {
         removeLinkTo(m_pShape);
         m_pShape = 0;
     }
-    
+
     m_pShape = pShape;
-    
+
     if (m_pShape)
     {
         // Link with the new shape
@@ -106,11 +106,11 @@ void GhostObject::setCollisionShape(CollisionShape* pShape)
 PhysicalComponent* GhostObject::getOverlappingObject(unsigned int index)
 {
     assert(m_pGhostObject);
-    
+
     btCollisionObject* pObject = m_pGhostObject->getOverlappingObject(index);
     if (!pObject)
         return 0;
-    
+
     return static_cast<PhysicalComponent*>(pObject->getUserPointer());
 }
 
@@ -160,49 +160,49 @@ void GhostObject::mustUnlinkComponent(Component* pComponent)
 
 Utils::PropertiesList* GhostObject::getProperties() const
 {
-	// Call the base class implementation
-	PropertiesList* pProperties = CollisionObject::getProperties();
+    // Call the base class implementation
+    PropertiesList* pProperties = CollisionObject::getProperties();
 
-	// Create the category belonging to this type
-	pProperties->selectCategory(TYPE, false);
+    // Create the category belonging to this type
+    pProperties->selectCategory(TYPE, false);
 
     // Shape
     if (m_pShape)
         pProperties->set("shape", new Variant(m_pShape->getID().toString()));
 
-	// Returns the list
-	return pProperties;
+    // Returns the list
+    return pProperties;
 }
 
 //-----------------------------------------------------------------------
 
 bool GhostObject::setProperty(const std::string& strCategory, const std::string& strName,
-								Utils::Variant* pValue)
+                                Utils::Variant* pValue)
 {
-	assert(!strCategory.empty());
-	assert(!strName.empty());
-	assert(pValue);
+    assert(!strCategory.empty());
+    assert(!strName.empty());
+    assert(pValue);
 
-	if (strCategory == TYPE)
-		return GhostObject::setProperty(strName, pValue);
+    if (strCategory == TYPE)
+        return GhostObject::setProperty(strName, pValue);
 
-	return CollisionObject::setProperty(strCategory, strName, pValue);
+    return CollisionObject::setProperty(strCategory, strName, pValue);
 }
 
 //-----------------------------------------------------------------------
 
 bool GhostObject::setProperty(const std::string& strName, Utils::Variant* pValue)
 {
-	// Assertions
-	assert(!strName.empty());
-	assert(pValue);
+    // Assertions
+    assert(!strName.empty());
+    assert(pValue);
 
     // Declarations
     bool bUsed = true;
 
-	// Shape
-	if (strName == "shape")
-	{
+    // Shape
+    if (strName == "shape")
+    {
         tComponentID id(pValue->toString());
 
         if (id.type == COMP_PHYSICAL)
@@ -217,10 +217,10 @@ bool GhostObject::setProperty(const std::string& strName, Utils::Variant* pValue
         {
             setCollisionShape(0);
         }
-	}
+    }
 
-	// Destroy the value
-	delete pValue;
+    // Destroy the value
+    delete pValue;
 
-	return bUsed;
+    return bUsed;
 }

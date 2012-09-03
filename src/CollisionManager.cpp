@@ -1,7 +1,7 @@
-/**	@file	CollisionManager.cpp
-	@author	Philip Abbet
+/** @file   CollisionManager.cpp
+    @author Philip Abbet
 
-	Implementation of the class 'Athena::Physics::CollisionManager'
+    Implementation of the class 'Athena::Physics::CollisionManager'
 */
 
 #include <Athena-Physics/CollisionManager.h>
@@ -50,12 +50,12 @@ bool CollisionManager::needBroadphaseCollision(btBroadphaseProxy* pProxy1,
 {
     tCollisionGroup group1 = getGroupOfCollisionObject((btCollisionObject*) pProxy1->m_clientObject);
     tCollisionGroup group2 = getGroupOfCollisionObject((btCollisionObject*) pProxy2->m_clientObject);
-    
+
     if ((group1 == 255) || (group2 == 255))
         return true;
 
     tPairState state;
-    
+
     if (group1 <= group2)
         state = m_indexedPairs[group1][group2];
     else
@@ -71,12 +71,12 @@ void CollisionManager::enableCollision(tCollisionGroup group1, tCollisionGroup g
                                        bool bEnableFilter)
 {
     tPairState* pState;
-    
+
     if (group1 <= group2)
         pState = &m_indexedPairs[group1][group2];
     else
         pState = &m_indexedPairs[group2][group1];
-    
+
     *pState = (bEnableFilter ? PAIR_ENABLED_WITH_FILTER : PAIR_ENABLED);
 }
 
@@ -90,7 +90,7 @@ void CollisionManager::customNearCallback(btBroadphasePair& collisionPair,
     if (CollisionManager::_CurrentManager)
     {
         tCollisionGroup group1, group2;
-        
+
         CollisionObject* pComponent1 = getComponentOfCollisionObject((btCollisionObject*) collisionPair.m_pProxy0->m_clientObject, group1);
         CollisionObject* pComponent2 = getComponentOfCollisionObject((btCollisionObject*) collisionPair.m_pProxy1->m_clientObject, group2);
 

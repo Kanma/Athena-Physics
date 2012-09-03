@@ -1,7 +1,7 @@
-/** @file	CollisionShape.h
-	@author	Philip Abbet
+/** @file   CollisionShape.h
+    @author Philip Abbet
 
-	Declaration of the class 'Athena::Physics::CollisionShape'
+    Declaration of the class 'Athena::Physics::CollisionShape'
 */
 
 #ifndef _ATHENA_PHYSICS_COLLISIONSHAPE_H_
@@ -15,62 +15,62 @@ namespace Physics {
 
 
 //---------------------------------------------------------------------------------------
-/// @brief	Base class for all the collision shapes
+/// @brief  Base class for all the collision shapes
 ///
 /// Collision shapes are used to specify the shape of a body in the physical simulation.
 /// See Body for a detailed explanation.
 //---------------------------------------------------------------------------------------
-class ATHENA_SYMBOL CollisionShape: public PhysicalComponent
+class ATHENA_PHYSICS_SYMBOL CollisionShape: public PhysicalComponent
 {
     friend class Body;
 
-    
-	//_____ Construction / Destruction __________
+
+    //_____ Construction / Destruction __________
 public:
     //-----------------------------------------------------------------------------------
-    /// @brief	Constructor
-    /// @param	strName		Name of the component
+    /// @brief  Constructor
+    /// @param  strName     Name of the component
     //-----------------------------------------------------------------------------------
-	CollisionShape(const std::string& strName, Entities::ComponentsList* pList);
+    CollisionShape(const std::string& strName, Entities::ComponentsList* pList);
 
     //-----------------------------------------------------------------------------------
-    /// @brief	Create a new component (Component creation method)
+    /// @brief  Create a new component (Component creation method)
     ///
-    /// @param	strName	Name of the component
-    /// @param	pList	List to which the component must be added
-    /// @return			The new component
+    /// @param  strName Name of the component
+    /// @param  pList   List to which the component must be added
+    /// @return         The new component
     //-----------------------------------------------------------------------------------
-	static CollisionShape* create(const std::string& strName, Entities::ComponentsList* pList);
+    static CollisionShape* create(const std::string& strName, Entities::ComponentsList* pList);
 
     //-----------------------------------------------------------------------------------
-    /// @brief	Cast a component to a CollisionShape
+    /// @brief  Cast a component to a CollisionShape
     ///
-    /// @param	pComponent	The component
-    /// @return				The component, 0 if it isn't castable to a CollisionShape
+    /// @param  pComponent  The component
+    /// @return             The component, 0 if it isn't castable to a CollisionShape
     //-----------------------------------------------------------------------------------
-	static CollisionShape* cast(Entities::Component* pComponent);
+    static CollisionShape* cast(Entities::Component* pComponent);
 
 protected:
     //-----------------------------------------------------------------------------------
-    /// @brief	Destructor
+    /// @brief  Destructor
     //-----------------------------------------------------------------------------------
-	virtual ~CollisionShape();
+    virtual ~CollisionShape();
 
 
-	//_____ Implementation of Component __________
+    //_____ Implementation of Component __________
 public:
-	//-----------------------------------------------------------------------------------
-	/// @brief	Returns the type of the component
-	/// @return	The type
-	//-----------------------------------------------------------------------------------
-	virtual const std::string getType() const { return TYPE; }
+    //-----------------------------------------------------------------------------------
+    /// @brief  Returns the type of the component
+    /// @return The type
+    //-----------------------------------------------------------------------------------
+    virtual const std::string getType() const { return TYPE; }
 
 
-	//_____ Methods __________
+    //_____ Methods __________
 public:
-	//-----------------------------------------------------------------------------------
-	/// @brief	Returns the Bullet's collision shape
-	//-----------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------
+    /// @brief  Returns the Bullet's collision shape
+    //-----------------------------------------------------------------------------------
     inline btCollisionShape* getCollisionShape() const
     {
         return m_pCollisionShape;
@@ -83,51 +83,51 @@ protected:
     }
 
 
-	//_____ Management of the properties __________
+    //_____ Management of the properties __________
 public:
     //-----------------------------------------------------------------------------------
-    /// @brief	Returns a list containing the properties of the component
+    /// @brief  Returns a list containing the properties of the component
     ///
     /// Used in the serialization mecanism of the components
-    /// @remark	Must be overriden by each component type. Each implementation must first call
-    ///			its base class one, and add a new category (named after the component's type)
-    ///			AT THE BEGINNING of the obtained list, containing the properties related to
-    ///			this type.
-    /// @return	The list of properties
+    /// @remark Must be overriden by each component type. Each implementation must first call
+    ///         its base class one, and add a new category (named after the component's type)
+    ///         AT THE BEGINNING of the obtained list, containing the properties related to
+    ///         this type.
+    /// @return The list of properties
     //-----------------------------------------------------------------------------------
-	virtual Utils::PropertiesList* getProperties() const;
-	
+    virtual Utils::PropertiesList* getProperties() const;
+
     //-----------------------------------------------------------------------------------
-    /// @brief	Set the value of a property of the component
+    /// @brief  Set the value of a property of the component
     ///
     /// Used in the deserialization mecanism of the parts
-    ///	@param	strCategory		The category of the property
-    ///	@param	strName			The name of the property
-    ///	@param	pValue			The value of the property
-    ///	@return					'true' if the property was used, 'false' if a required object
-    ///							is missing
-    /// @remark	Must be overriden by each component type. Each implementation must test if the
-    ///			property's category is the one of the component's type, and if so process the
-    ///			property's value. Otherwise, it must call its base class implementation.
+    /// @param  strCategory     The category of the property
+    /// @param  strName         The name of the property
+    /// @param  pValue          The value of the property
+    /// @return                 'true' if the property was used, 'false' if a required object
+    ///                         is missing
+    /// @remark Must be overriden by each component type. Each implementation must test if the
+    ///         property's category is the one of the component's type, and if so process the
+    ///         property's value. Otherwise, it must call its base class implementation.
     //-----------------------------------------------------------------------------------
-	virtual bool setProperty(const std::string& strCategory, const std::string& strName,
-							 Utils::Variant* pValue);
+    virtual bool setProperty(const std::string& strCategory, const std::string& strName,
+                             Utils::Variant* pValue);
 
     //-----------------------------------------------------------------------------------
-    /// @brief	Set the value of a property of the component
+    /// @brief  Set the value of a property of the component
     ///
     /// Used in the deserialization mecanism of the parts
-    ///	@param	strName		The name of the property
-    ///	@param	pValue		The value of the property
-    ///	@return				'true' if the property was used, 'false' if a required object
-    ///						is missing
+    /// @param  strName     The name of the property
+    /// @param  pValue      The value of the property
+    /// @return             'true' if the property was used, 'false' if a required object
+    ///                     is missing
     //-----------------------------------------------------------------------------------
-	bool setProperty(const std::string& strName, Utils::Variant* pValue);
+    bool setProperty(const std::string& strName, Utils::Variant* pValue);
 
 
-	//_____ Constants __________
+    //_____ Constants __________
 public:
-	static const std::string TYPE;	        ///< Name of the type of component
+    static const std::string TYPE;          ///< Name of the type of component
 
 
     //_____ Attributes __________

@@ -1,7 +1,7 @@
-/** @file	Conversions.h
-	@author	Philip Abbet
+/** @file   Conversions.h
+    @author Philip Abbet
 
-	Declaration of some conversion functions between Athena and Bullet types
+    Declaration of some conversion functions between Athena and Bullet types
 */
 
 #ifndef _ATHENA_PHYSICS_CONVERSIONS_H_
