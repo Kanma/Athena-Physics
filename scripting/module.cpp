@@ -16,6 +16,7 @@ using namespace Athena::Physics;
 
 /*********************************** EXTERNAL FUNCTIONS *********************************/
 
+extern bool bind_Body(v8::Handle<Object> parent);
 extern bool bind_CollisionObject(v8::Handle<Object> parent);
 extern bool bind_CollisionShape(v8::Handle<Object> parent);
 extern bool bind_CompoundShape(v8::Handle<Object> parent);
@@ -51,6 +52,7 @@ extern "C" {
                bind_CollisionShape(parent) &&
                bind_PrimitiveShape(parent) &&
                bind_CompoundShape(parent) &&
-               bind_CollisionObject(parent);
+               bind_CollisionObject(parent) &&
+               bind_Body(parent);
     }
 }

@@ -5,6 +5,7 @@ xmake_import_search_paths(ATHENA_PHYSICS)
 
 # List the source files
 set(SRCS module.cpp
+         Body.cpp
          CollisionObject.cpp
          CollisionShape.cpp
          CompoundShape.cpp
