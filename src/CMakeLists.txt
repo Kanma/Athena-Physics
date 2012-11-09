@@ -56,16 +56,12 @@ endif()
 
 
 # Declaration of the library
-if (NOT ATHENA_PHYSICS_STATIC)
-    xmake_create_dynamic_library(ATHENA_PHYSICS Athena-Physics
-                                 "${ATHENA_PHYSICS_VERSION_MAJOR}.${ATHENA_PHYSICS_VERSION_MINOR}.${ATHENA_PHYSICS_VERSION_PATCH}"
-                                 "${ATHENA_PHYSICS_VERSION_MAJOR}.${ATHENA_PHYSICS_VERSION_MINOR}.${ATHENA_PHYSICS_VERSION_PATCH}"
-                                 ${HEADERS} ${SRCS})
+xmake_create_dynamic_library(ATHENA_PHYSICS Athena-Physics
+                             "${ATHENA_PHYSICS_VERSION_MAJOR}.${ATHENA_PHYSICS_VERSION_MINOR}.${ATHENA_PHYSICS_VERSION_PATCH}"
+                             "${ATHENA_PHYSICS_VERSION_MAJOR}.${ATHENA_PHYSICS_VERSION_MINOR}.${ATHENA_PHYSICS_VERSION_PATCH}"
+                             ${HEADERS} ${SRCS})
 
-    xmake_add_to_list_property(ATHENA_PHYSICS COMPILE_DEFINITIONS "ATHENA_PHYSICS_EXPORTS")
-else()
-    xmake_create_static_library(ATHENA_PHYSICS Athena-Physics ${HEADERS} ${SRCS})
-endif()
+xmake_add_to_list_property(ATHENA_PHYSICS COMPILE_DEFINITIONS "ATHENA_PHYSICS_EXPORTS")
 
 xmake_project_link(ATHENA_PHYSICS ATHENA_ENTITIES BULLET)
 
