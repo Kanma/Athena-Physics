@@ -24,6 +24,52 @@ The use of this module is optional, you can choose to implement your own
 components instead.
 
 
+This module can be used as a standalone library, or combined with the rest of
+the Athena Game Framework (http://github.com/Kanma/Athena-Framework).
+
+Additionally, when the Athena-Scripting (http://github.com/Kanma/Athena-Scripting)
+module is built alongside this one, Athena-Physics will be usable from JavaScript.
+
+
+---------------------------------------
+- Dependencies
+---------------------------------------
+
+Athena-Physics requires the following dependencies:
+
+   - XMake
+   - Athena-Math
+   - Athena-Core
+   - Athena-Entities
+   - Bullet
+   - UnitTest++
+
+They are provided as GIT submodules of this repository and will be compiled
+automatically during the compilation of Athena-Physics.
+
+To download them, do:
+
+    somewhere$ cd <path/to/the/source/of/Athena-Physics>
+    Athena-Physics$ git submodule init
+    Athena-Physics$ git submodule update
+
+
+---------------------------------------
+- Compilation
+---------------------------------------
+
+(Note: you'll need to install CMake to compile Athena-Physics)
+
+To compile Athena-Physics (and all its dependencies), do:
+
+    somewhere$ mkdir build
+    somewhere$ cd build
+    build$ cmake <path/to/the/source/of/Athena-Physics>
+    build$ make
+
+The library will be put in build/bin/
+
+
 ---------------------------------------
 - Credits
 ---------------------------------------
