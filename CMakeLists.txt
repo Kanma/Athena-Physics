@@ -15,26 +15,6 @@ endif()
 
 
 ##########################################################################################
-# Setup the dependencies
-
-if (NOT DEFINED ATHENA_MATH_STATIC)
-    set(ATHENA_MATH_STATIC ON)
-endif()
-
-if (NOT DEFINED ATHENA_CORE_STATIC)
-    set(ATHENA_CORE_STATIC ON)
-endif()
-
-if (NOT DEFINED ATHENA_ENTITIES_STATIC)
-    set(ATHENA_ENTITIES_STATIC ON)
-endif()
-
-if (ATHENA_PHYSICS_GRAPHICS_SUPPORT AND NOT EXISTS "${XMAKE_DEPENDENCIES_DIR}/Ogre/CMakeLists.txt")
-    set(ATHENA_PHYSICS_GRAPHICS_SUPPORT OFF)
-endif()
-
-
-##########################################################################################
 # Library version
 
 set(ATHENA_PHYSICS_VERSION_MAJOR 1)
@@ -91,6 +71,10 @@ if (DEFINED ATHENA_SCRIPTING_ENABLED AND ATHENA_SCRIPTING_ENABLED)
     set(ATHENA_PHYSICS_SCRIPTING ON)
 else()
     set(ATHENA_PHYSICS_SCRIPTING OFF)
+endif()
+
+if (ATHENA_PHYSICS_GRAPHICS_SUPPORT AND NOT EXISTS "${XMAKE_DEPENDENCIES_DIR}/Ogre/CMakeLists.txt")
+    set(ATHENA_PHYSICS_GRAPHICS_SUPPORT OFF)
 endif()
 
 add_subdirectory(include)
