@@ -5,10 +5,6 @@ project(ATHENA_PHYSICS)
 ##########################################################################################
 # Settings
 
-if (NOT DEFINED ATHENA_PHYSICS_STATIC)
-    set(ATHENA_PHYSICS_STATIC OFF CACHE BOOL "Build Athena-Physics as a static library")
-endif()
-
 if (NOT DEFINED ATHENA_PHYSICS_GRAPHICS_SUPPORT)
     set(ATHENA_PHYSICS_GRAPHICS_SUPPORT OFF CACHE BOOL "Enable Athena-Graphics support")
 endif()
