@@ -1,7 +1,7 @@
 ********************************************************************************
 *                                                                              *
 *                               Athena-Physics                                 *
-*                               Version 1.1.1                                  *
+*                               Version 1.1.2                                  *
 *                    http://github.com/Kanma/Athena-Physics                    *
 *                                                                              *
 ********************************************************************************
@@ -42,6 +42,7 @@ Athena-Physics requires the following dependencies:
    - Athena-Core
    - Athena-Entities
    - Bullet
+   - rapidjson
    - UnitTest++
 
 They are provided as GIT submodules of this repository and will be compiled

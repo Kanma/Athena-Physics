@@ -16,3 +16,6 @@
 [submodule "dependencies/UnitTest++"]
 	path = dependencies/UnitTest++
 	url = git://github.com/Kanma/UnitTest-cpp.git
+[submodule "dependencies/rapidjson"]
+	path = dependencies/rapidjson
+	url = git://github.com/Kanma/rapidjson.git
