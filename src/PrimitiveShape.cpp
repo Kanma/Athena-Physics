@@ -236,6 +236,10 @@ Math::Real PrimitiveShape::getRadius() const
 
         case SHAPE_SPHERE:
             return dynamic_cast<btSphereShape*>(m_pCollisionShape)->getRadius();
+
+        case SHAPE_BOX:
+            // Nothing to do, but the compiler complains if not present
+            break;
     }
 
     return 0.0f;
@@ -268,6 +272,11 @@ Math::Real PrimitiveShape::getHeight() const
                 case AXIS_Z:
                     return dynamic_cast<btCylinderShape*>(m_pCollisionShape)->getHalfExtentsWithMargin().getZ();
             }
+
+        case SHAPE_BOX:
+        case SHAPE_SPHERE:
+            // Nothing to do, but the compiler complains if not present
+            break;
     }
 
     return 0.0f;
